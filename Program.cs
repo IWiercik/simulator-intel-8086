@@ -35,18 +35,18 @@ namespace Projekt_INTEL8086
                         }
                         else
                         {
-                            System.Console.WriteLine("Zła wartość, zakres danych wynosi 0-255");
+                            System.Console.WriteLine("Zła wartość, zakres danych wynosi 0-255\n");
                         }
 
                     }
                     else
                     {
-                        System.Console.WriteLine("Zła wartość, nasz zakres to 00:FF");
+                        System.Console.WriteLine("Zła wartość, nasz zakres to 00:FF\n");
                     }
                 }
                 else
                 {
-                    System.Console.WriteLine("Input nie może być pusty!");
+                    System.Console.WriteLine("Input nie może być pusty!\n");
                 }
             }
             System.Console.WriteLine("\nUdało ci sie wpisać wszystkie potrzebne wartości do rejestrów");
@@ -57,25 +57,27 @@ namespace Projekt_INTEL8086
             {
                 System.Console.WriteLine("Niepoprawna wartość, proszę wybrac pomiędzy 1/MOV a  2/EXH");
                 operation = (Console.ReadLine()).ToUpper();
-                if (operation == "1")
-                {
-                    operation = "MOV";
-                }
-                else if (operation == "2")
-                {
-                    operation = "EXH";
-                }
+            }
+            if (operation == "1")
+            {
+                operation = "MOV";
+            }
+            else if (operation == "2")
+            {
+                operation = "EXH";
             }
             string firstRegister = "";
+            int indexOfFirstRegister = -1;
             string secondRegister = "";
+            int indexOfSecondRegister = -1;
             while (firstRegister == "" || secondRegister == "")
             {
                 if (firstRegister == "")
                 {
                     System.Console.WriteLine("Wybierz rejestr 1 na którym ma zostac wykonana operacja " + "[" + operation + "]");
                     firstRegister = (Console.ReadLine()).ToUpper();
-                    int arrrayContainRegister = Array.IndexOf(registerNames, firstRegister);
-                    if (arrrayContainRegister == -1)
+                    indexOfFirstRegister = Array.IndexOf(registerNames, firstRegister);
+                    if (indexOfFirstRegister == -1)
                     {
                         System.Console.WriteLine("\nNiepoprawna wartość proszę wybrac prawidłowy rejestr!");
                         firstRegister = "";
@@ -92,8 +94,8 @@ namespace Projekt_INTEL8086
                     }
                     else
                     {
-                        int arrrayContainRegister = Array.IndexOf(registerNames, secondRegister);
-                        if (arrrayContainRegister == -1)
+                        indexOfSecondRegister = Array.IndexOf(registerNames, secondRegister);
+                        if (indexOfSecondRegister == -1)
                         {
                             System.Console.WriteLine("\nNiepoprawna wartość proszę wybrac prawidłowy rejestr!");
                             secondRegister = "";
@@ -105,12 +107,23 @@ namespace Projekt_INTEL8086
             switch (operation)
             {
                 case "MOV":
+                    System.Console.WriteLine("\nWykonano operacje:" + "[" + operation + "]" + "\n[" + firstRegister + "]" + "-->" + "[" + secondRegister + "]");
+                    registerValues[indexOfSecondRegister] = registerValues[indexOfFirstRegister];
                     break;
                 case "EXH":
+                    System.Console.WriteLine("\nWykonano operacje:\n" + "[" + operation + "]" + "\n" + "[" + firstRegister + "]" + "-- > " + "[" + secondRegister + "]\n" + "[" + firstRegister + "]" + " < --" + "[" + secondRegister + "]"
+                    );
+                    string temp = registerValues[indexOfFirstRegister];
+                    registerValues[indexOfFirstRegister] = registerValues[indexOfSecondRegister];
+                    registerValues[indexOfSecondRegister] = temp;
                     break;
                 default:
-                break;
+                    System.Console.WriteLine("Something went wrong!");
+                    break;
             }
+            Console.WriteLine("\nTwoja tablica aktualnie wyglada tak: ");
+            showingArrayContent(registerValues, registerNames);
+        
 
         }
         static void showingArrayContent(string[] tableWithValues, string[] tableWithNames)
