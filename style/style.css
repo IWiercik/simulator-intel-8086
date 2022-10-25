@@ -82,7 +82,11 @@ body {
     border: none;
     font-size: 24px;
     text-transform: uppercase;
+    border-bottom: 1px solid green;
     z-index: 1000;
+}
+.register-box-content input:valid{
+border: none;
 }
 
 
