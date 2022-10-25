@@ -50,7 +50,8 @@ namespace Projekt_INTEL8086
                 }
             }
             System.Console.WriteLine("\nUdało ci sie wpisać wszystkie potrzebne wartości do rejestrów");
-            showingArrayContent(registerValues, registerNames);
+            showingArrayContent(registerValues, registerNames); 
+            SECONDPHASE:
             System.Console.WriteLine("\nJaka chcesz wykonac teraz operacje ?\n 1:MOV 2:EXH");
             string operation = (Console.ReadLine()).ToUpper();
             while (!(operation == "1" || operation == "MOV" || operation == "2" || operation == "EXH"))
@@ -123,7 +124,19 @@ namespace Projekt_INTEL8086
             }
             Console.WriteLine("\nTwoja tablica aktualnie wyglada tak: ");
             showingArrayContent(registerValues, registerNames);
-        
+
+            Console.WriteLine("\nKończymy działanie programu, czy powtarzamy działanie ? ");
+            Console.WriteLine("1/T : Powtarzamy \n 2/N/etc.. : Kończymy");
+            string lastOperation = Console.ReadLine();
+            if (lastOperation == "1" || lastOperation == "T")
+            {
+                goto SECONDPHASE;
+            }   
+            else
+            {
+                Console.WriteLine("KONIEC PROGRAMU!");
+            }
+
 
         }
         static void showingArrayContent(string[] tableWithValues, string[] tableWithNames)
