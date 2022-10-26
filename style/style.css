@@ -136,12 +136,12 @@ body {
 .result-box-arrow {
     width: 30%;
     height: 100px;
-    font-size: 60px;
+    font-size: 50px;
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     color: green;
+    text-align: center;
 }
 
 /* custom  JS*/
