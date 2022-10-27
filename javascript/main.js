@@ -46,30 +46,27 @@ const checkIfUserFillInputs = () => {
   const areAllFieldsFilledCorrectly = inputsArray.every((item) => {
     return item.value.length == 2;
   });
-  return areAllFieldsFilledCorrectly;
+  // return areAllFieldsFilledCorrectly;
+  return true;
 };
-function choosingOption() {
+function choosingOperation() {
   if (!checkIfUserFillInputs()) {
     alert("First you need to fill all inputs to choose option!");
   } else if (counterOfActiveClasses(registerBoxes) != 2) {
     alert("First you need to choose 2 registers!");
   } else {
-    if (counterOfActiveClasses(optionBoxes) == 1) {
-      if (this.classList[1]) {
-        this.classList.remove("active-option");
-        operationArrow.textContent = "";
-      } else {
-        alert("Osiagnieto maksymalna ilosc operacji!");
-      }
-    } else {
-      this.classList.toggle("active-option");
-      operationArrow.innerHTML = this.attributes[1].value;
-    }
+    optionBoxes.forEach((box) => box.classList.remove("active-option"));
+    this.classList.add("active-option");
+    operationArrow.innerHTML = this.attributes[1].value;
   }
 }
+
 const refreshingResultBoxesValues = () => {
   resultBoxes[0].textContent = registers[0];
   resultBoxes[1].textContent = registers[1];
+};
+const submittingProgram = () => {
+
 };
 
 registerBoxes.forEach((box) =>
@@ -82,4 +79,5 @@ registerBoxes.forEach((box) =>
 inputsArray.forEach((input) =>
   input.addEventListener("input", listenerOnHexadecimalFormat)
 );
-optionBoxes.forEach((box) => box.addEventListener("click", choosingOption));
+optionBoxes.forEach((box) => box.addEventListener("click", choosingOperation));
+submitButton.addEventListener("click", submittingProgram);
