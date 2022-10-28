@@ -1,0 +1,30 @@
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.exe
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.deps.json
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.runtimeconfig.json
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.dll
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.pdb
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.csproj.AssemblyReference.cache
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.GeneratedMSBuildEditorConfig.editorconfig
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.AssemblyInfoInputs.cache
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.AssemblyInfo.cs
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.csproj.CoreCompileInputs.cache
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.dll
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\refint\Projekt_INTEL8086.dll
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.pdb
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.genruntimeconfig.cache
+D:\Jezyki-programowania\C#\Projekt_INTEL8086\Projekt_INTEL8086\obj\Debug\net6.0\ref\Projekt_INTEL8086.dll
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.exe
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.deps.json
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.runtimeconfig.json
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.dll
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\bin\Debug\net6.0\Projekt_INTEL8086.pdb
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.csproj.AssemblyReference.cache
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.GeneratedMSBuildEditorConfig.editorconfig
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.AssemblyInfoInputs.cache
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.AssemblyInfo.cs
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.csproj.CoreCompileInputs.cache
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.dll
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\refint\Projekt_INTEL8086.dll
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.pdb
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\Projekt_INTEL8086.genruntimeconfig.cache
+D:\Programowanie Front End\GitV2\Projekt_INTEL8086\obj\Debug\net6.0\ref\Projekt_INTEL8086.dll
