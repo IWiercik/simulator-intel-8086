@@ -70,7 +70,45 @@ const refreshingResultBoxesValues = () => {
   resultBoxes[0].textContent = registers[0];
   resultBoxes[1].textContent = registers[1];
 };
-const submittingProgram = () => {};
+const submittingProgram = () => {
+  let firstRegister;
+  let secondRegister;
+  let operation;
+  registerBoxes.forEach((box) => {
+    if (box.classList[1]) {
+      if (box.textContent == registers[0]) {
+        firstRegister = box.children[0]; // input value
+      } else {
+        secondRegister = box.children[0]; // input value
+      }
+    }
+  });
+  optionBoxes.forEach((option) =>
+    option.classList[1] ? (operation = option.textContent) : false
+  );
+  const isValid =
+    firstRegister?.value.length > 0 &&
+    secondRegister?.value.length > 0 &&
+    operation.length > 0;
+  if (isValid) {
+    switch (operation) {
+      case "MOV":
+        secondRegister.value = firstRegister.value;
+        break;
+      case "EXH":
+        const temp = firstRegister.value;
+        firstRegister.value = secondRegister.value;
+        secondRegister.value = temp;
+        break;
+      default:
+    }
+  } else {
+    showingSweetAlert(
+      "Choose elements!",
+      "First you need to choose registers and operation!"
+    );
+  }
+};
 
 registerBoxes.forEach((box) =>
   box.addEventListener("click", function (e) {
