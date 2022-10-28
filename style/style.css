@@ -167,3 +167,7 @@ body {
 .active-option {
     border: 5px solid rgb(9, 45, 206);
 }
+.swal2-container.swal2-center>.swal2-popup{
+    background: black;
+    color: white;
+}

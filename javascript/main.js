@@ -34,11 +34,14 @@ const choosingRegister = (e, box) => {
           }
           box.classList.add("active");
         } else {
-          alert("2 registers are maximum!");
+          showingSweetAlert(
+            "Maximum registers",
+            "You can choose only two registers"
+          );
         }
       }
     } else {
-      alert("First you need to fill all inputs to choose register!");
+      showingSweetAlert("Fill Inputs", "First you need to fill all inputs");
     }
   }
 };
@@ -46,14 +49,16 @@ const checkIfUserFillInputs = () => {
   const areAllFieldsFilledCorrectly = inputsArray.every((item) => {
     return item.value.length == 2;
   });
-  // return areAllFieldsFilledCorrectly;
-  return true;
+  return areAllFieldsFilledCorrectly;
 };
 function choosingOperation() {
   if (!checkIfUserFillInputs()) {
-    alert("First you need to fill all inputs to choose option!");
+    showingSweetAlert("Fill Inputs", "First you need to fill all inputs");
   } else if (counterOfActiveClasses(registerBoxes) != 2) {
-    alert("First you need to choose 2 registers!");
+    showingSweetAlert(
+      "Choose registers",
+      "First you need to choose two registers!"
+    );
   } else {
     optionBoxes.forEach((box) => box.classList.remove("active-option"));
     this.classList.add("active-option");
@@ -65,9 +70,7 @@ const refreshingResultBoxesValues = () => {
   resultBoxes[0].textContent = registers[0];
   resultBoxes[1].textContent = registers[1];
 };
-const submittingProgram = () => {
-
-};
+const submittingProgram = () => {};
 
 registerBoxes.forEach((box) =>
   box.addEventListener("click", function (e) {
