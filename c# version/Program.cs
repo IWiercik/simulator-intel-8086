@@ -6,13 +6,10 @@ namespace Projekt_INTEL8086
         static void Main(string[] args)
         {
             int loopCounter = 0;
-            string AL = "0", AH = "0";
-            string[] registerNames = new string[2] { "AL", "AH" };
-            string[] registerValues = new string[2] { AL, AH };
-
-            // string AL = "0", AH = "0", BL = "0", BH = "0", CL = "0", CH = "0", DL = "0", DH = "0";
-            // string[] registerNames = new string[8] { "AL", "AH", "BL", "BH", "CL", "CH", "DL", "DH" };
-            // string[] registerValues = new string[8] { AH, AL, BL, BH, CL, CH, DL, DH };
+            string AL = "0", AH = "0"
+            string AL = "0", AH = "0", BL = "0", BH = "0", CL = "0", CH = "0", DL = "0", DH = "0";
+            string[] registerNames = new string[8] { "AL", "AH", "BL", "BH", "CL", "CH", "DL", "DH" };
+            string[] registerValues = new string[8] { AH, AL, BL, BH, CL, CH, DL, DH };
             while (loopCounter < registerValues.Length)
             {
                 Console.WriteLine("Podaj wartość dla rejestru:" + registerNames[loopCounter]);
