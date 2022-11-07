@@ -54,9 +54,18 @@ body {
     position: relative;
 }
 
-.register-box-wrapper,
-.options-box-wrapper {
+.register-box-wrapper {
     width: 20%;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.9);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.options-box-wrapper {
+    width: 16%;
     height: 100px;
     background: rgba(0, 0, 0, 0.9);
     position: relative;
@@ -167,7 +176,8 @@ body {
 .active-option {
     border: 5px solid rgb(9, 45, 206);
 }
-.swal2-container.swal2-center>.swal2-popup{
+
+.swal2-container.swal2-center>.swal2-popup {
     background: black;
     color: white;
 }
