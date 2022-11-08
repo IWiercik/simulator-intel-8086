@@ -12,7 +12,7 @@ const operationUsedSingleChildWrapper = document.querySelector('.single-operatio
 const operationUsedSingleBox = document.querySelector('#single-box');
 const operationInput = document.querySelector('#single-box-input');
 // OPERATION DATA TYPES
-let dataTypesDivs = [...document.querySelectorAll('.visible .data-type-wrapper')].map((item) => [
+let dataTypesDivs = [...document.querySelectorAll('.data-type-wrapper')].map((item) => [
   item.children[0],
   item.children[2],
 ]);
@@ -21,13 +21,7 @@ const cursivesBettwenDataTypes = [...document.querySelectorAll('.cursive-parent'
 const submitButton = document.querySelector('.confirm-operation');
 
 // EVENT LISTENERS
-// registerInputsArray.forEach((input) =>
-//   input.addEventListener('input', function (event) {
-//     console.log(event.target);
-//     listenerOnHexadecimalFormat;
-//     event.stopPropagation();
-//   })
-// );
+registerInputsArray.forEach((input) => input.addEventListener('input', listenerOnHexadecimalFormat));
 operationInput.addEventListener('input', listenerOnHexadecimalFormat);
 operationBoxes.forEach((box) => box.addEventListener('click', choosingOperation));
 dataTypesDivs.forEach((array, parentIndex) =>
@@ -39,18 +33,17 @@ dataTypesDivs.forEach((array, parentIndex) =>
 );
 registerBoxes.forEach((box) =>
   box.addEventListener('click', function (event) {
-    event.stopPropagation();
-    // choosingRegister(e, box);
-    // refreshingResultBoxesValues();
-    // alert("you clicked on")
-    console.log(box);
-  })
-);
-registerInputsArray.forEach((input) =>
-  input.addEventListener('click', function (event) {
-    console.log(event.target);
+    if (event.target.localName != 'input') {
+      choosingRegister(event, box);
+    }
     event.stopPropagation();
   })
 );
+// registerInputsArray.forEach((input) =>
+//   input.addEventListener('click', function (event) {
+//     console.log(event.target);
+//     event.stopPropagation();
+//   })
+// );
 
 submitButton.addEventListener('click', submittingProgram);

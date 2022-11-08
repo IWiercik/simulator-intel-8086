@@ -1,5 +1,7 @@
 const registers = ['', '']; // "" = free place for register
+const dataBoxes = ['', ''];
 let choosedDataType = [];
+let singleDataType = false;
 let operation;
 
 function choosingDataType(box, parent, parentIndex, boxIndex) {
@@ -19,13 +21,8 @@ function choosingDataType(box, parent, parentIndex, boxIndex) {
       showingSweetAlert('Maximum data types', 'Choose only 1 type of data cell or register');
     }
   }
-  const arrayWithActiveDataTypes = [];
-  dataTypesDivs.forEach((divsArray) =>
-    counterOfActiveClasses(divsArray)
-      ? arrayWithActiveDataTypes.push(...divsArray.filter((item) => item.classList[1]))
-      : false
-  );
-  choosedDataType = arrayWithActiveDataTypes;
+
+  choosedDataType = gettingActiveDataTypes(dataTypesDivs);
 }
 function choosingOperation() {
   if (!checkIfUserFillInputs()) {
@@ -42,35 +39,23 @@ function choosingOperation() {
       case 'DEC':
         operaionUsedMultiChildWrapper.classList.remove('visible');
         operationUsedSingleChildWrapper.classList.add('visible');
-        refetchDataTypes();
+        singleDataType = true;
         break;
       default:
         operaionUsedMultiChildWrapper.classList.add('visible');
         operationUsedSingleChildWrapper.classList.remove('visible');
-        refetchDataTypes();
+        singleDataType = false;
         break;
     }
   }
+  refetchDataTypes();
+  choosedDataType = gettingActiveDataTypes(dataTypesDivs);
 }
 const choosingRegister = (e, box) => {
   if (e.target.localName == 'div') {
     if (checkIfUserFillInputs()) {
-      if (box.classList[1]) {
-        // removing
-        const indexItemToRemove = registers.indexOf(box.textContent);
-        registers[indexItemToRemove] = '';
-        box.classList.remove('active');
+      if (!singleDataType) {
       } else {
-        // ADDING
-        if (counterOfActiveClasses(registerBoxes) != 2) {
-          const firstFreeSpace = registers.indexOf('');
-          if (firstFreeSpace != -1) {
-            registers[firstFreeSpace] = box.textContent;
-          }
-          box.classList.add('active');
-        } else {
-          showingSweetAlert('Maximum registers', 'You can choose only two registers');
-        }
       }
     } else {
       showingSweetAlert('Fill Inputs', 'First you need to fill all inputs');
@@ -137,6 +122,16 @@ const counterOfActiveClasses = (array) => {
   array.forEach((item) => (item.classList[1] ? counter++ : false)); //classList[1] active/undefined
   return counter;
 };
-
-
-
+function gettingActiveDataTypes(array) {
+  const arrayWithActiveDataTypes = [];
+  array.forEach((divsArray) =>
+    counterOfActiveClasses(divsArray)
+      ? arrayWithActiveDataTypes.push(...divsArray.filter((item) => item.classList[1]))
+      : false
+  );
+  return arrayWithActiveDataTypes;
+}
+//Config for loading website;
+window.addEventListener('load', function () {
+  refetchDataTypes();
+});
