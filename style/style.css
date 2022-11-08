@@ -152,6 +152,7 @@ input:valid {
     align-items: center;
     justify-content: center;
     position: relative;
+    margin-top: 30px;
 }
 
 .data-type-wrapper {
