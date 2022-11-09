@@ -2,7 +2,7 @@
 const registerBoxes = [...document.querySelectorAll('.register-box-content')];
 const registerInputsArray = [...document.querySelectorAll('.register-input')];
 // MIDDLE SIDE OPTIONS
-const operationBoxes = [...document.querySelectorAll('.options-box-content')];
+const optionsBoxes = [...document.querySelectorAll('.options-box-content')];
 const operationPlace = document.querySelector('.operation-place');
 // BOTTOM SIDE OPERATION
 const operationUsedMultiChildWrapper = document.querySelector('.multi-operation');
@@ -16,12 +16,13 @@ let dataTypesDivs = [...document.querySelectorAll('.data-type-wrapper')].map((it
 ]);
 const cursivesBettwenDataTypes = [...document.querySelectorAll('.cursive-parent')];
 // ENDING PROGRAM
+let operationBoxes = [...document.querySelectorAll('.visible .result-box .box-value')];
 const submitButton = document.querySelector('.confirm-operation');
 
 // EVENT LISTENERS
 registerInputsArray.forEach((input) => input.addEventListener('input', listenerOnHexadecimalFormat));
 operationInputs.forEach((input) => input.addEventListener('input', listenerOnHexadecimalFormat));
-operationBoxes.forEach((box) => box.addEventListener('click', choosingOperation));
+optionsBoxes.forEach((box) => box.addEventListener('click', choosingOperation));
 dataTypesDivs.forEach((array, parentIndex) =>
   array.forEach((item, boxIndex) =>
     item.addEventListener('click', function () {
