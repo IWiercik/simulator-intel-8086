@@ -179,7 +179,7 @@ input:valid {
 
 .cursive-parent {
     background: rgb(2, 0, 36);
-    background: linear-gradient(125deg, green(2, 0, 36, 1) 50%, rgba(9, 9, 121, 1) 40%, black 10%);
+    background: linear-gradient(125deg, black 50%, rgb(9, 9, 121) 40%, green 10%)
 }
 
 .cursive {
