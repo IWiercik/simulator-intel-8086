@@ -6,10 +6,12 @@ let operation;
 
 function choosingDataType(box, parent, parentIndex, boxIndex) {
   if (counterOfActiveClasses(parent) == 0) {
+    //
     box.classList.add('active-data-type');
     cursivesBettwenDataTypes[parentIndex].style.background = `linear-gradient(125deg, ${
       boxIndex == 0 ? 'green' : 'black'
     } 50%, rgba(9, 9, 121, 1) 40%, ${boxIndex == 0 ? 'black' : 'green'} 10%)`;
+    manageDataDivsContent(box, parent);
   } else if (counterOfActiveClasses(parent) == 1) {
     if (box.classList[1]) {
       //if user clicked on actived item
@@ -17,11 +19,11 @@ function choosingDataType(box, parent, parentIndex, boxIndex) {
       cursivesBettwenDataTypes[
         parentIndex
       ].style.background = `linear-gradient(125deg, rgba(2, 0, 36, 1) 50%, rgba(9, 9, 121, 1) 40%, black 10%)`;
+      manageDataDivsContent(box, parent);
     } else {
       showingSweetAlert('Maximum data types', 'Choose only 1 type of data cell or register');
     }
   }
-
   choosedDataType = gettingActiveDataTypes(dataTypesDivs);
 }
 function choosingOperation() {
@@ -37,12 +39,12 @@ function choosingOperation() {
       case 'NOT':
       case 'INC':
       case 'DEC':
-        operaionUsedMultiChildWrapper.classList.remove('visible');
+        operationUsedMultiChildWrapper.classList.remove('visible');
         operationUsedSingleChildWrapper.classList.add('visible');
         singleDataType = true;
         break;
       default:
-        operaionUsedMultiChildWrapper.classList.add('visible');
+        operationUsedMultiChildWrapper.classList.add('visible');
         operationUsedSingleChildWrapper.classList.remove('visible');
         singleDataType = false;
         break;
@@ -100,6 +102,19 @@ const refetchDataTypes = () => {
     item.children[2],
   ]);
 };
+const manageDataDivsContent = (element, parent) => {
+  const elementWrapper = element.parentElement.parentElement;
+  let activeDiv = parent.filter((div) => div.classList[1]);
+  if (activeDiv[0]?.textContent == 'CELL') {
+    if (elementWrapper.children.length > 2) {
+      elementWrapper.removeChild(elementWrapper.children[2]);
+    }
+  } else if (activeDiv[0]?.textContent == 'REGISTER') {
+    if (elementWrapper.children.length == 2) {
+      elementWrapper.appendChild(createInput());
+    }
+  }
+};
 const checkIfUserFillInputs = () => {
   const areAllFieldsFilledCorrectly = registerInputsArray.every((item) => {
     return item.value.length == 2;
@@ -130,6 +145,18 @@ function gettingActiveDataTypes(array) {
       : false
   );
   return arrayWithActiveDataTypes;
+}
+function createInput() {
+  const input = document.createElement('input');
+  Object.assign(input, {
+    type: 'text',
+    name: 'register-value',
+    maxLength:4,
+    minLength: 4,
+    required: true,
+  });
+  input.addEventListener('input',listenerOnHexadecimalFormat);
+  return input;
 }
 //Config for loading website;
 window.addEventListener('load', function () {
