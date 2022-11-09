@@ -54,6 +54,7 @@ body {
     position: relative;
     /* z-index: 1; */
 }
+
 .register-box-container input {
     /* z-index: 100; */
 }
@@ -198,6 +199,7 @@ input:valid {
 
 .result-box input {
     width: 80px;
+    border-bottom: 1px solid green;
 }
 
 .result-box-arrow {
