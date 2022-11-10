@@ -5,7 +5,8 @@ let operation;
 
 //BASIC FUNCTIONS
 function choosingDataType(box, parent, parentIndex, boxIndex) {
-  if ( !box.classList[1]) { // Checking if user didnt clciked same element 
+  if (!box.classList[1]) {
+    // Checking if user didnt clciked same element
     parent.forEach((item) => item.classList.remove("active-data-type"));
     box.classList.add("active-data-type");
     cursivesBettwenDataTypes[
@@ -13,19 +14,23 @@ function choosingDataType(box, parent, parentIndex, boxIndex) {
     ].style.background = `linear-gradient(125deg, ${
       boxIndex == 0 ? "green" : "black"
     } 50%, rgba(9, 9, 121, 1) 40%, ${boxIndex == 0 ? "black" : "green"} 10%)`;
-    if(registers.length > 0){
-      const valueOfElementToRemove =  parent[0].offsetParent.offsetParent.children[1].textContent;
-      if(valueOfElementToRemove){
-        const registerBoxesValues =  registerBoxes.map(box => box.textContent.trim().slice(0,-1));
-        const elementToRemove = registerBoxes[registerBoxesValues.indexOf(valueOfElementToRemove)];
-        elementToRemove.classList.remove('active');
-        registers = [...document.querySelectorAll('.active')];
+    if (registers.length > 0) {
+      const valueOfElementToRemove =
+        parent[0].offsetParent.offsetParent.children[1].textContent;
+      if (valueOfElementToRemove) {
+        const registerBoxesValues = registerBoxes.map((box) =>
+          box.textContent.trim().slice(0, -1)
+        );
+        const elementToRemove =
+          registerBoxes[registerBoxesValues.indexOf(valueOfElementToRemove)];
+        elementToRemove.classList.remove("active");
+        registers = [...document.querySelectorAll(".active")];
       }
     }
     manageDataDivsContent(box, parent);
     choosedDataType = gettingActiveDataTypes(dataTypesDivs);
     refetchOperationBoxesValue();
-  } 
+  }
 }
 function choosingOperation() {
   if (!checkIfUserFillInputs()) {
@@ -97,42 +102,24 @@ const choosingRegister = (e, box) => {
   registers = [...document.querySelectorAll(".register-box-wrapper .active")];
 };
 const submittingProgram = () => {
-  let firstRegister;
-  let secondRegister;
-  let operation;
-  registerBoxes.forEach((box) => {
-    if (box.classList[1]) {
-      if (box.textContent == registers[0]) {
-        firstRegister = box.children[0]; // input value
+  const maximumRegisterBasedOnDataType = choosedDataType.filter(
+    (item) => item.textContent == "REGISTER"
+  ).length;
+  if(operation){
+    if(maximumRegisterBasedOnDataType == registers.length){
+      let cellIsValid = false;
+      let cellArray = operationBoxes.filter( item => item.localName == "input");
+      cellArray = cellArray.map(input => input.value);
+      if(cellArray.every( value =>value.length == 4)){
+          // DO OPERATIONS
       } else {
-        secondRegister = box.children[0]; // input value
+        showingSweetAlert("Not correct values of cell", "You need to write cell value");
       }
-    }
-  });
-  optionsBoxes.forEach((option) =>
-    option.classList[1] ? (operation = option.textContent) : false
-  );
-  const isValid =
-    firstRegister?.value.length > 0 &&
-    secondRegister?.value.length > 0 &&
-    operation.length > 0;
-  if (isValid) {
-    switch (operation) {
-      case "MOV":
-        secondRegister.value = firstRegister.value;
-        break;
-      case "EXH":
-        const temp = firstRegister.value;
-        firstRegister.value = secondRegister.value;
-        secondRegister.value = temp;
-        break;
-      default:
+    } else {
+      showingSweetAlert("Not choosed registers","Change data type or choose correct amount of registers");
     }
   } else {
-    showingSweetAlert(
-      "Choose elements!",
-      "First you need to choose registers and operation!"
-    );
+    showingSweetAlert("Not choosed operation", "You need to choose operation to submit program");
   }
 };
 // ADDITIONAL + SECURE
