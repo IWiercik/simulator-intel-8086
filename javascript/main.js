@@ -148,6 +148,9 @@ const refetchOperationBoxesValue = () => {
     ...document.querySelectorAll(".visible .result-box .box-value"),
   ];
 };
+const refetchActiveRegisters = () =>{
+  registers = [...document.querySelectorAll(".register-box-wrapper .active")];
+}
 const manageDataDivsContent = (element, parent) => {
   const elementWrapper = element.parentElement.parentElement;
   let activeDiv = parent.filter((div) => div.classList[1]);
@@ -228,7 +231,6 @@ function cleaningOperationBoxesValues() {
 function operationsOnSubmit(operation, values) {
   const firstValueType = values[0].includes(":") ? "register"  : "cell";
   const secondValueType =  values.length  == 2  ? values[1].includes(":") ? "register"  : "cell" : false ;
-  console.log(firstValueType,secondValueType);
    //Before and after operation
   const firstValueBefore = {
     value : firstValueType == "register" ? values[0].slice(3,5) : workingOnCell(values[0])?.value,
@@ -236,7 +238,7 @@ function operationsOnSubmit(operation, values) {
   } 
   const secondValueBefore = {
     value : secondValueType == "register" ? values[1].slice(3,5) : workingOnCell(values[1])?.value,
-    name :  secondValueType == "register" ? values[1].slice(0,2) : values[1].toUpperCase(),
+    name :  secondValueType == "register" ? values[1].slice(0,2) : values[1]?.toUpperCase(),
   }
   const firstValueAfter = {
     value : "",
@@ -246,12 +248,32 @@ function operationsOnSubmit(operation, values) {
     value: "",
     name : secondValueBefore.name
   }
-console.log(firstValueAfter,secondValueAfter);
   switch (operation) {
     case "MOV":
       firstValueAfter.value = firstValueBefore.value;
       secondValueAfter.value = firstValueBefore.value;
       break;
+    case "EXH":
+        firstValueAfter.value = secondValueBefore.value;
+        secondValueAfter.value = firstValueBefore.value;  
+        break;
+    case "NOT" :
+        let firstFourBytesBin = parseInt(firstValueBefore.value[0],16).toString(2);
+        let nextFourBytesBin =  parseInt(firstValueBefore.value[1],16).toString(2);
+        if(firstFourBytesBin){                // We want format 0000 (4bytes showing)
+          const zeroString = "0"; 
+          firstFourBytesBin = zeroString.repeat(4-firstFourBytesBin.length ) + firstFourBytesBin;
+        }
+        if(nextFourBytesBin){
+          const zeroString = "0"; 
+          nextFourBytesBin = zeroString.repeat(4-nextFourBytesBin.length ) + nextFourBytesBin;
+        }
+        const binaryValue  =  firstFourBytesBin.concat(nextFourBytesBin);
+        const bits = [...binaryValue];
+        const negatedBits =  bits.map(byte => byte == 1 ? 0 : 1);
+        const negatedBinary = parseInt(negatedBits.join(""), 2).toString(16).toUpperCase();
+        firstValueAfter.value = negatedBinary.length == 1 ? "0"+negatedBinary : negatedBinary; 
+         break;
     case "INC":
       break;  
     default:
@@ -261,20 +283,25 @@ console.log(firstValueAfter,secondValueAfter);
   //After operation we changed our datas and showing results
 
   if(firstValueType == "register"){
-    const index = registerBoxes.findIndex(item => item == registers[registers.length-1]);
+    const index = registerBoxes.findIndex(item => item.textContent.trim().slice(0,2) == firstValueBefore.name);
+    registerBoxes[index].children[0].value  = firstValueAfter.value;
   } else { // Cell
     const index = cells.findIndex(item => item.name == firstValueAfter.name);
     cells[index].value = firstValueAfter.value;
   }
 
-  if(secondValueType == "register"){
-    const index = registerBoxes.findIndex(item => item == registers[registers.length-1]);
-  } else { // Cell
-    const index = cells.findIndex(item => item.name == secondValueAfter.name);
-    cells[index].value = secondValueAfter.value;
-      
+  if(secondValueType){
+    if(secondValueType == "register"){
+      const index = registerBoxes.findIndex(item => item.textContent.trim().slice(0,2)  == secondValueBefore.name);
+      registerBoxes[index].children[0].value  = secondValueAfter.value;
+    } else { // Cell
+      const index = cells.findIndex(item => item.name == secondValueAfter.name);
+      cells[index].value = secondValueAfter.value;  
+    }
   }
   showingOperationsResult(operation, firstValueBefore,secondValueBefore, firstValueAfter, secondValueAfter);
+  refetchOperationBoxesValue();
+  refetchActiveRegisters();
 }
 //Config for loading website;
 window.addEventListener("load", function () {
