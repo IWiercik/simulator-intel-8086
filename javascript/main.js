@@ -84,6 +84,7 @@ const choosingRegister = (e, box) => {
           clickedDiv.classList.add("active");
           const indexOfFirstFreeSpace = HTMLElementsValues.indexOf("");
           HTMLElementsShowingValue[indexOfFirstFreeSpace].textContent = value;
+          HTMLElementsShowingValue[indexOfFirstFreeSpace].setAttribute("data-value",`${clickedDiv.children[0].value}`);
         } else {
           showingSweetAlert(
             "Maxium amount of registers",
@@ -105,21 +106,34 @@ const submittingProgram = () => {
   const maximumRegisterBasedOnDataType = choosedDataType.filter(
     (item) => item.textContent == "REGISTER"
   ).length;
-  if(operation){
-    if(maximumRegisterBasedOnDataType == registers.length){
-      let cellIsValid = false;
-      let cellArray = operationBoxes.filter( item => item.localName == "input");
-      cellArray = cellArray.map(input => input.value);
-      if(cellArray.every( value =>value.length == 4)){
-          // DO OPERATIONS
+  if (operation) {
+    if (maximumRegisterBasedOnDataType == registers.length) {
+      let cellArray = operationBoxes.filter(
+        (item) => item.localName == "input"
+      );
+      cellArray = cellArray.map((input) => input.value);
+      if (cellArray.every((value) => value.length == 4)) {
+        const values = operationBoxes.map((value,index) =>{
+         return value.localName == "span" ? value.textContent + ":" +  operationBoxes[index].dataset.value : value.value;
+        });
+        operationsOnSubmit(operation, values);
       } else {
-        showingSweetAlert("Not correct values of cell", "You need to write cell value");
+        showingSweetAlert(
+          "Not correct values of cell",
+          "You need to write cell value"
+        );
       }
     } else {
-      showingSweetAlert("Not choosed registers","Change data type or choose correct amount of registers");
+      showingSweetAlert(
+        "Not choosed registers",
+        "Change data type or choose correct amount of registers"
+      );
     }
   } else {
-    showingSweetAlert("Not choosed operation", "You need to choose operation to submit program");
+    showingSweetAlert(
+      "Not choosed operation",
+      "You need to choose operation to submit program"
+    );
   }
 };
 // ADDITIONAL + SECURE
@@ -211,8 +225,62 @@ function cleaningOperationBoxesValues() {
     item.textContent = "";
   });
 }
+function operationsOnSubmit(operation, values) {
+  const firstValueType = values[0].includes(":") ? "register"  : "cell";
+  const secondValueType =  values.length  == 2  ? values[1].includes(":") ? "register"  : "cell" : false ;
+  console.log(firstValueType,secondValueType);
+   //Before and after operation
+  const firstValueBefore = {
+    value : firstValueType == "register" ? values[0].slice(3,5) : workingOnCell(values[0])?.value,
+    name : firstValueType == "register" ? values[0].slice(0,2) : values[0].toUpperCase(),
+  } 
+  const secondValueBefore = {
+    value : secondValueType == "register" ? values[1].slice(3,5) : workingOnCell(values[1])?.value,
+    name :  secondValueType == "register" ? values[1].slice(0,2) : values[1].toUpperCase(),
+  }
+  const firstValueAfter = {
+    value : "",
+    name : firstValueBefore.name
+  }
+  const secondValueAfter ={
+    value: "",
+    name : secondValueBefore.name
+  }
+console.log(firstValueAfter,secondValueAfter);
+  switch (operation) {
+    case "MOV":
+      firstValueAfter.value = firstValueBefore.value;
+      secondValueAfter.value = firstValueBefore.value;
+      break;
+    case "INC":
+      break;  
+    default:
+      console.log("Something went wrong!");
+      break;
+  }
+  //After operation we changed our datas and showing results
+
+  if(firstValueType == "register"){
+    const index = registerBoxes.findIndex(item => item == registers[registers.length-1]);
+  } else { // Cell
+    const index = cells.findIndex(item => item.name == firstValueAfter.name);
+    cells[index].value = firstValueAfter.value;
+  }
+
+  if(secondValueType == "register"){
+    const index = registerBoxes.findIndex(item => item == registers[registers.length-1]);
+  } else { // Cell
+    const index = cells.findIndex(item => item.name == secondValueAfter.name);
+    cells[index].value = secondValueAfter.value;
+      
+  }
+  showingOperationsResult(operation, firstValueBefore,secondValueBefore, firstValueAfter, secondValueAfter);
+}
 //Config for loading website;
 window.addEventListener("load", function () {
   refetchDataTypes();
   choosedDataType = gettingActiveDataTypes(dataTypesDivs);
+  setTimeout(()=>{
+    fillingCells();
+  },1000)
 });
