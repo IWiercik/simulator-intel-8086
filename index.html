@@ -12,12 +12,15 @@
     <script src="./javascript/main.js" defer></script>
     <script src="./javascript/downloadHTMLElements.js" defer></script>
     <script src="./javascript/sweetAlerts.js"></script>
+    <script src="./javascript/cells.js"></script>
     <title>INTEL 8086 Simulation</title>
   </head>
   <body>
     <div class="body-container">
       <div class="body-container-center">
+
         <h1 class="big-string">INTEL 8086</h1>
+
         <div class="register-box-container">
           <div class="register-box-wrapper">
             <div class="register-box-content" data-index="0">
@@ -28,7 +31,7 @@
                 maxlength="2"
                 minlength="2"
                 required="true"
-                value="FF"
+                value="00"
                 class="register-input"
               />
             </div>
@@ -42,7 +45,7 @@
                 maxlength="2"
                 minlength="2"
                 required="true"
-                value="FF"
+                value="AA"
                 class="register-input"
               />
             </div>
@@ -56,7 +59,7 @@
                 maxlength="2"
                 minlength="2"
                 required="true"
-                value="FF"
+                value="AA"
                 class="register-input"
               />
             </div>
@@ -70,7 +73,7 @@
                 maxlength="2"
                 minlength="2"
                 required="true"
-                value="FF"
+                value="AA"
                 class="register-input"
               />
             </div>
@@ -146,46 +149,48 @@
           <div class="options-box-wrapper"><div class="options-box-content" data-content="+">ADD</div></div>
           <div class="options-box-wrapper"><div class="options-box-content" data-content="/">SUB</div></div>
         </div>
+
         <div class="result-box-container">
           <h2 class="big-string" id="result">OPERATION:</h2>
           <h3>OPERATION:<span class="operation-place"></span></h3>
           <div class="result-boxes-container multi-operation visible">
             <div class="result-box" id="multi-box">
               <div class="data-type-wrapper">
-                <div class="data-type-box">REGISTER</div>
+                <div class="data-type-box active-data-type">REGISTER</div>
                 <div class="cursive-parent">
                   <div class="cursive"></div>
                 </div>
-                <div class="data-type-box active-data-type">CELL</div>
+                <div class="data-type-box">CELL</div>
               </div>
-              <input type="text" class="box-value" name="register-value" maxlength="4" minlength="2" required="true" />
+              <span class="box-value"></span>
             </div>
             <div class="result-box-arrow"></div>
             <div class="result-box" id="multi-box">
               <div class="data-type-wrapper">
-                <div class="data-type-box">REGISTER</div>
+                <div class="data-type-box active-data-type">REGISTER</div>
                 <div class="cursive-parent">
                   <div class="cursive"></div>
                 </div>
-                <div class="data-type-box active-data-type">CELL</div>
+                <div class="data-type-box">CELL</div>
               </div>
-              <input type="text" class="box-value" name="register-value" maxlength="4" minlength="2" required="true" />
+              <span class="box-value"></span>
             </div>
           </div>
           <div class="result-boxes-container single-operation">
             <div class="result-box" id="single-box">
               <div class="data-type-wrapper">
-                <div class="data-type-box">REGISTER</div>
+                <div class="data-type-box  active-data-type">REGISTER</div>
                 <div class="cursive-parent">
                   <div class="cursive"></div>
                 </div>
-                <div class="data-type-box active-data-type">CELL</div>
+                <div class="data-type-box">CELL</div>
               </div>
-              <input type="text" class="box-value" name="register-value" maxlength="4" minlength="2" required="true" />
+              <span class="box-value"></span>
             </div>
           </div>
           <button class="confirm-operation">CONFIRM OPERATION</button>
         </div>
+
       </div>
     </div>
   </body>

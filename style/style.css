@@ -179,7 +179,7 @@ input:valid {
 
 .cursive-parent {
     background: rgb(2, 0, 36);
-    background: linear-gradient(125deg, black 50%, rgb(9, 9, 121) 40%, green 10%)
+    background: linear-gradient(125deg, green 50%, rgb(9, 9, 121) 40%, black 10%)
 }
 
 .cursive {
@@ -235,15 +235,40 @@ input:valid {
     border: 5px solid rgb(9, 45, 206);
 }
 
-.swal2-container.swal2-center>.swal2-popup {
-    background: black;
-    color: white;
-}
-
 .visible {
     display: flex !important;
 }
 
 .active-data-type {
     background: green;
+}
+/* SWAL*/
+.swal2-container.swal2-center>.swal2-popup {
+    background: black;
+    color: white;
+    position: relative;
+}
+.sweet-alert-result-wrapper{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+.results-wrapper{
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
+.results-wrapper div{
+    width: 120px;
+    height: 100px;
+    border: 3px solid green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.results-wrapper span{
+    margin-left: 8px;
+}
+.green-string{
+    color: green;
 }
