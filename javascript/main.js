@@ -6,7 +6,7 @@ let operation;
 //BASIC FUNCTIONS
 function choosingDataType(box, parent, parentIndex, boxIndex) {
   if (!box.classList[1]) {
-    // Checking if user didnt clciked same element
+    // Checking if user didnt clicked same element
     parent.forEach((item) => item.classList.remove("active-data-type"));
     box.classList.add("active-data-type");
     cursivesBettwenDataTypes[parentIndex].style.background = `linear-gradient(125deg, ${
@@ -223,6 +223,7 @@ function transformValueToEightBytesFormat(value) {
   return binaryValue;
 }
 function operationsOnSubmit(operation, values) {
+  let operationIsValid = true;
   const firstValueType = values[0].includes(":") ? "register" : "cell";
   const secondValueType = values.length == 2 ? (values[1].includes(":") ? "register" : "cell") : false;
   //Before and after operation
@@ -293,9 +294,57 @@ function operationsOnSubmit(operation, values) {
         transformedORoperation[i] = firstEightBytesOR || secondEightBytesOR ? 1 : 0;
       }
       transformedORoperation = parseInt(transformedORoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
-      transformedORoperation = transformedORoperation.length == 1 ? "0" + transformedORoperation : transformedORoperation;
+      transformedORoperation =
+        transformedORoperation.length == 1 ? "0" + transformedORoperation : transformedORoperation;
       firstValueAfter.value = transformedORoperation;
       secondValueAfter.value = transformedORoperation;
+      break;
+    case "XOR":
+      const firstEightBytesXOR = [...transformValueToEightBytesFormat(firstValueBefore.value)];
+      const secondEightBytesXOR = [...transformValueToEightBytesFormat(secondValueBefore.value)];
+      let transformedXORoperation = [];
+      for (let i = 0; i < 8; i++) {
+        if (firstEightBytesXOR[i] || secondEightBytesXOR[i]) {
+          if (firstEightBytesXOR[i] == "1" && secondEightBytesXOR[i] == "1") {
+            transformedXORoperation[i] = 0;
+          } else {
+            transformedXORoperation[i] = 1;
+          }
+        } else {
+          transformedXORoperation[i] = 0;
+        }
+      }
+      console.log(firstEightBytesXOR, secondEightBytesXOR);
+      console.log(transformedXORoperation);
+      transformedXORoperation = parseInt(transformedXORoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
+      transformedXORoperation =
+        transformedXORoperation.length == 1 ? "0" + transformedXORoperation : transformedXORoperation;
+      firstValueAfter.value = transformedXORoperation;
+      secondValueAfter.value = transformedXORoperation;
+      break;
+    case "ADD":
+      const decFirstData = parseInt(firstValueBefore.value, 16);
+      const decSecData = parseInt(secondValueBefore.value, 16);
+      if (decFirstData + decSecData <= 255) {
+        let result = (decFirstData + decSecData).toString("16").toUpperCase();
+        result.length == 2 ? "" : (result = "0" + result);
+        firstValueAfter.value = result;
+        secondValueAfter.value = result;
+      } else {
+        operationIsValid = false;
+      }
+      break;
+    case "SUB":
+      const decFirstDataSUB = parseInt(firstValueBefore.value, 16);
+      const decSecDataSUB = parseInt(secondValueBefore.value, 16);
+      if (decFirstDataSUB - decSecDataSUB >= 0) {
+        let result = (decFirstDataSUB - decSecDataSUB).toString("16").toUpperCase();
+        result.length == 2 ? "" : (result = "0" + result);
+        firstValueAfter.value = result;
+        secondValueAfter.value = result;
+      } else {
+        operationIsValid = false;
+      }
       break;
     default:
       console.log("Something went wrong!");
@@ -303,28 +352,32 @@ function operationsOnSubmit(operation, values) {
   }
   //After operation we changed(depend of flag) our datas and showing results
 
-  if (firstValueType == "register") {
-    const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == firstValueBefore.name);
-    registerBoxes[index].children[0].value = firstValueAfter.value;
-  } else {
-    // Cell
-    const index = cells.findIndex((item) => item.name == firstValueAfter.name);
-    cells[index].value = firstValueAfter.value;
-  }
-
-  if (secondValueType) {
-    if (secondValueType == "register") {
-      const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == secondValueBefore.name);
-      registerBoxes[index].children[0].value = secondValueAfter.value;
+  if (operationIsValid) {
+    if (firstValueType == "register") {
+      const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == firstValueBefore.name);
+      registerBoxes[index].children[0].value = firstValueAfter.value;
     } else {
       // Cell
-      const index = cells.findIndex((item) => item.name == secondValueAfter.name);
-      cells[index].value = secondValueAfter.value;
+      const index = cells.findIndex((item) => item.name == firstValueAfter.name);
+      cells[index].value = firstValueAfter.value;
     }
+
+    if (secondValueType) {
+      if (secondValueType == "register") {
+        const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == secondValueBefore.name);
+        registerBoxes[index].children[0].value = secondValueAfter.value;
+      } else {
+        // Cell
+        const index = cells.findIndex((item) => item.name == secondValueAfter.name);
+        cells[index].value = secondValueAfter.value;
+      }
+    }
+    showingOperationsResult(operation, firstValueBefore, secondValueBefore, firstValueAfter, secondValueAfter);
+    //at the end we need to refresh datasets to allow resubmiting without choosing
+    refreshDatasetsOfUsedBoxes(firstValueAfter.value, secondValueAfter.value);
+  } else {
+    showingSweetAlert("Operation Failed!", "You'r maximum range of operation is 00-FF change data or operation type!");
   }
-  showingOperationsResult(operation, firstValueBefore, secondValueBefore, firstValueAfter, secondValueAfter);
-  //at the end we need to refresh datasets to allow resubmiting without choosing
-  refreshDatasetsOfUsedBoxes(firstValueAfter.value, secondValueAfter.value);
 }
 //Config for loading website;
 window.addEventListener("load", function () {
