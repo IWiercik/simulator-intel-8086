@@ -148,9 +148,15 @@ const refetchOperationBoxesValue = () => {
     ...document.querySelectorAll(".visible .result-box .box-value"),
   ];
 };
-const refetchActiveRegisters = () =>{
-  registers = [...document.querySelectorAll(".register-box-wrapper .active")];
-}
+const refreshDatasetsOfUsedBoxes = (firstValue,secondValue) =>{
+  if(registers.length == 2){
+    operationBoxes[0].setAttribute('data-value', firstValue);
+    operationBoxes[1].setAttribute('data-value', secondValue);
+   } else  if( registers.length ==1){
+    const indexOfSpan = operationBoxes.findIndex(item=>item.localName=="span");
+    indexOfSpan == 0 ? operationBoxes[indexOfSpan].setAttribute('data-value',firstValue ) : operationBoxes[indexOfSpan].setAttribute('data-value',secondValue);
+   }
+};
 const manageDataDivsContent = (element, parent) => {
   const elementWrapper = element.parentElement.parentElement;
   let activeDiv = parent.filter((div) => div.classList[1]);
@@ -185,8 +191,8 @@ const counterOfActiveClasses = (array) => {
 function gettingActiveDataTypes(array) {
   const arrayWithActiveDataTypes = [];
   array.forEach((divsArray) =>
-    counterOfActiveClasses(divsArray)
-      ? arrayWithActiveDataTypes.push(
+    counterOfActiveClasses(divsArray) ?
+     arrayWithActiveDataTypes.push(
           ...divsArray.filter((item) => item.classList[1])
         )
       : false
@@ -235,19 +241,19 @@ function operationsOnSubmit(operation, values) {
   const firstValueBefore = {
     value : firstValueType == "register" ? values[0].slice(3,5) : workingOnCell(values[0])?.value,
     name : firstValueType == "register" ? values[0].slice(0,2) : values[0].toUpperCase(),
-  } 
+  } ;
   const secondValueBefore = {
     value : secondValueType == "register" ? values[1].slice(3,5) : workingOnCell(values[1])?.value,
     name :  secondValueType == "register" ? values[1].slice(0,2) : values[1]?.toUpperCase(),
-  }
+  };
   const firstValueAfter = {
     value : "",
     name : firstValueBefore.name
-  }
+  };
   const secondValueAfter ={
     value: "",
     name : secondValueBefore.name
-  }
+  };
   switch (operation) {
     case "MOV":
       firstValueAfter.value = firstValueBefore.value;
@@ -275,6 +281,11 @@ function operationsOnSubmit(operation, values) {
         firstValueAfter.value = negatedBinary.length == 1 ? "0"+negatedBinary : negatedBinary; 
          break;
     case "INC":
+      let decimalData = parseInt(firstValueBefore.value, 16);
+      decimalData++;
+      let incrementedDataHex = decimalData.toString('16');
+      incrementedDataHex.length == 1 ? incrementedDataHex = "0" + incrementedDataHex : "";
+      firstValueAfter.value  = incrementedDataHex.toUpperCase();
       break;  
     default:
       console.log("Something went wrong!");
@@ -300,14 +311,14 @@ function operationsOnSubmit(operation, values) {
     }
   }
   showingOperationsResult(operation, firstValueBefore,secondValueBefore, firstValueAfter, secondValueAfter);
-  refetchOperationBoxesValue();
-  refetchActiveRegisters();
-}
+  //at the end we need to refresh datasets to allow resubmiting without choosing 
+  refreshDatasetsOfUsedBoxes(firstValueAfter.value,secondValueAfter.value);
+  }
 //Config for loading website;
 window.addEventListener("load", function () {
   refetchDataTypes();
   choosedDataType = gettingActiveDataTypes(dataTypesDivs);
   setTimeout(()=>{
     fillingCells();
-  },1000)
+  },1000);
 });
