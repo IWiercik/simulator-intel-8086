@@ -207,6 +207,21 @@ function cleaningOperationBoxesValues() {
     item.textContent = "";
   });
 }
+function transformValueToEightBytesFormat(value) {
+  let firstFourBytesBin = parseInt(value[0], 16).toString(2);
+  let nextFourBytesBin = parseInt(value[1], 16).toString(2);
+  if (firstFourBytesBin) {
+    // We want format 0000 (4bytes showing)
+    const zeroString = "0";
+    firstFourBytesBin = zeroString.repeat(4 - firstFourBytesBin.length) + firstFourBytesBin;
+  }
+  if (nextFourBytesBin) {
+    const zeroString = "0";
+    nextFourBytesBin = zeroString.repeat(4 - nextFourBytesBin.length) + nextFourBytesBin;
+  }
+  const binaryValue = firstFourBytesBin.concat(nextFourBytesBin);
+  return binaryValue;
+}
 function operationsOnSubmit(operation, values) {
   const firstValueType = values[0].includes(":") ? "register" : "cell";
   const secondValueType = values.length == 2 ? (values[1].includes(":") ? "register" : "cell") : false;
@@ -237,18 +252,7 @@ function operationsOnSubmit(operation, values) {
       secondValueAfter.value = firstValueBefore.value;
       break;
     case "NOT":
-      let firstFourBytesBin = parseInt(firstValueBefore.value[0], 16).toString(2);
-      let nextFourBytesBin = parseInt(firstValueBefore.value[1], 16).toString(2);
-      if (firstFourBytesBin) {
-        // We want format 0000 (4bytes showing)
-        const zeroString = "0";
-        firstFourBytesBin = zeroString.repeat(4 - firstFourBytesBin.length) + firstFourBytesBin;
-      }
-      if (nextFourBytesBin) {
-        const zeroString = "0";
-        nextFourBytesBin = zeroString.repeat(4 - nextFourBytesBin.length) + nextFourBytesBin;
-      }
-      const binaryValue = firstFourBytesBin.concat(nextFourBytesBin);
+      const binaryValue = transformValueToEightBytesFormat(firstValueBefore.value);
       const bits = [...binaryValue];
       const negatedBits = bits.map((byte) => (byte == 1 ? 0 : 1));
       const negatedBinary = parseInt(negatedBits.join(""), 2).toString(16).toUpperCase();
@@ -256,23 +260,48 @@ function operationsOnSubmit(operation, values) {
       break;
     case "INC":
       let decimalData = parseInt(firstValueBefore.value, 16);
-      decimalData < 255 ? decimalData++ : false; 
+      decimalData < 255 ? decimalData++ : false;
       let incrementedDataHex = decimalData.toString("16");
       incrementedDataHex.length == 1 ? (incrementedDataHex = "0" + incrementedDataHex) : "";
       firstValueAfter.value = incrementedDataHex.toUpperCase();
       break;
     case "DEC":
       let decData = parseInt(firstValueBefore.value, 16);
-      decData > 0 ? decData-- : false; 
+      decData > 0 ? decData-- : false;
       let decrementedDataHex = decData.toString("16");
       decrementedDataHex.length == 1 ? (decrementedDataHex = "0" + decrementedDataHex) : "";
       firstValueAfter.value = decrementedDataHex.toUpperCase();
+      break;
+    case "AND":
+      const firstEightBytes = [...transformValueToEightBytesFormat(firstValueBefore.value)];
+      const secondEightBytes = [...transformValueToEightBytesFormat(secondValueBefore.value)];
+      let transformedANDoperation = [];
+      for (let i = 0; i < 8; i++) {
+        transformedANDoperation[i] = firstEightBytes[i] * secondEightBytes[i];
+      }
+      transformedANDoperation = parseInt(transformedANDoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
+      transformedANDoperation =
+        transformedANDoperation.length == 1 ? "0" + transformedANDoperation : transformedANDoperation;
+      firstValueAfter.value = transformedANDoperation;
+      secondValueAfter.value = transformedANDoperation;
+      break;
+    case "OR":
+      const firstEightBytesOR = [...transformValueToEightBytesFormat(firstValueBefore.value)];
+      const secondEightBytesOR = [...transformValueToEightBytesFormat(secondValueBefore.value)];
+      let transformedORoperation = [];
+      for (let i = 0; i < 8; i++) {
+        transformedORoperation[i] = firstEightBytesOR || secondEightBytesOR ? 1 : 0;
+      }
+      transformedORoperation = parseInt(transformedORoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
+      transformedORoperation = transformedORoperation.length == 1 ? "0" + transformedORoperation : transformedORoperation;
+      firstValueAfter.value = transformedORoperation;
+      secondValueAfter.value = transformedORoperation;
       break;
     default:
       console.log("Something went wrong!");
       break;
   }
-  //After operation we changed our datas and showing results
+  //After operation we changed(depend of flag) our datas and showing results
 
   if (firstValueType == "register") {
     const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == firstValueBefore.name);
