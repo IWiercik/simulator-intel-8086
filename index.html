@@ -9,55 +9,188 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="./javascript/sweetAlerts.js" defer></script>
     <script src="./javascript/main.js" defer></script>
+    <script src="./javascript/downloadHTMLElements.js" defer></script>
+    <script src="./javascript/sweetAlerts.js"></script>
+    <script src="./javascript/cells.js"></script>
     <title>INTEL 8086 Simulation</title>
   </head>
   <body>
     <div class="body-container">
       <div class="body-container-center">
+
         <h1 class="big-string">INTEL 8086</h1>
+
         <div class="register-box-container">
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="0">AL:<input type="text" name="register-value" maxlength="2" minlength="2" required="true"></span></div>
+            <div class="register-box-content" data-index="0">
+              AL:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="00"
+                class="register-input"
+              />
+            </div>
           </div>
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="1">AH:<input type="text" name="register-value" maxlength="2" minlength="2" required="true"></span></div>
+            <div class="register-box-content" data-index="1">
+              AH:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="AA"
+                class="register-input"
+              />
+            </div>
           </div>
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="2">BL:<input type="text" name="register-value" maxlength="2" minlength="2" required="true"></span></div>
+            <div class="register-box-content" data-index="2">
+              BL:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="AA"
+                class="register-input"
+              />
+            </div>
           </div>
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="3">BH:<input type="text" name="register-value" maxlength="2" minlength="2"required="true" ></span></div>
+            <div class="register-box-content" data-index="3">
+              BH:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="AA"
+                class="register-input"
+              />
+            </div>
           </div>
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="4">CL:<input type="text" name="register-value" maxlength="2" minlength="2" required="true" ></span></div>
+            <div class="register-box-content" data-index="4">
+              CL:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="FF"
+                class="register-input"
+              />
+            </div>
           </div>
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="5">CH:<input type="text" name="register-value" maxlength="2" minlength="2" required="true" ></span></div>
+            <div class="register-box-content" data-index="5">
+              CH:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="FF"
+                class="register-input"
+              />
+            </div>
           </div>
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="6">DL:<input type="text" name="register-value" maxlength="2" minlength="2" required="true"></span></div>
+            <div class="register-box-content" data-index="6">
+              DL:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="FF"
+                class="register-input"
+              />
+            </div>
           </div>
           <div class="register-box-wrapper">
-            <div class="register-box-content" data-index="7">DH:<input type="text" name="register-value" maxlength="2" minlength="2" required="true"></span></div>
+            <div class="register-box-content" data-index="7">
+              DH:
+              <input
+                type="text"
+                name="register-value"
+                maxlength="2"
+                minlength="2"
+                required="true"
+                value="FF"
+                class="register-input"
+              />
+            </div>
           </div>
         </div>
+
         <div class="options-box-container">
           <h2 class="big-string">OPTIONS:</h2>
           <div class="options-box-wrapper"><div class="options-box-content" data-content="-->">MOV</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content ="--><br/><--">EXH</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="--><br/><--">EXH</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="!">NOT</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="++">INC</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="--">DEC</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="&&">AND</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="||">OR</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="!||">XOR</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="+">ADD</div></div>
+          <div class="options-box-wrapper"><div class="options-box-content" data-content="/">SUB</div></div>
         </div>
+
         <div class="result-box-container">
-          <h2 class="big-string" id="result">RESULT:</h2>
-          <h3>OPERATION USED:<span class=""></span></h3>
-          <div class="result-boxes-container">
-            <div class="result-box"><span class="box-values"></span></div>
+          <h2 class="big-string" id="result">OPERATION:</h2>
+          <h3>OPERATION:<span class="operation-place"></span></h3>
+          <div class="result-boxes-container multi-operation visible">
+            <div class="result-box" id="multi-box">
+              <div class="data-type-wrapper">
+                <div class="data-type-box active-data-type">REGISTER</div>
+                <div class="cursive-parent">
+                  <div class="cursive"></div>
+                </div>
+                <div class="data-type-box">CELL</div>
+              </div>
+              <span class="box-value"></span>
+            </div>
             <div class="result-box-arrow"></div>
-            <div class="result-box"><span class="box-values"></span></div>
+            <div class="result-box" id="multi-box">
+              <div class="data-type-wrapper">
+                <div class="data-type-box active-data-type">REGISTER</div>
+                <div class="cursive-parent">
+                  <div class="cursive"></div>
+                </div>
+                <div class="data-type-box">CELL</div>
+              </div>
+              <span class="box-value"></span>
+            </div>
+          </div>
+          <div class="result-boxes-container single-operation">
+            <div class="result-box" id="single-box">
+              <div class="data-type-wrapper">
+                <div class="data-type-box  active-data-type">REGISTER</div>
+                <div class="cursive-parent">
+                  <div class="cursive"></div>
+                </div>
+                <div class="data-type-box">CELL</div>
+              </div>
+              <span class="box-value"></span>
+            </div>
           </div>
           <button class="confirm-operation">CONFIRM OPERATION</button>
         </div>
+
       </div>
     </div>
   </body>
