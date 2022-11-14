@@ -24,5 +24,5 @@ function showingOperationsResult(operation,firstValueBefore,secondValueBefore,fi
       </div>
     </div>
     `,
-  })
+  });
 }

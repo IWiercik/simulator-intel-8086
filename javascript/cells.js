@@ -6,8 +6,7 @@ const gettingRandomHexValue =() =>{
     randomNumber = "0" + randomNumber;
   }
   return randomNumber;
-}
-
+};
 const fillingCells = async () =>{
     for(let i= 0 ; i <65536; i++){
         let name = i.toString(16).toUpperCase() ;
@@ -18,8 +17,8 @@ const fillingCells = async () =>{
         };
         cells.push(obj);
       }
-}
+};
 const workingOnCell = (name) =>{
     const cell = cells.find(cell => cell.name === name);
     return cell;
-}
+};

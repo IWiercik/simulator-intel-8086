@@ -38,11 +38,5 @@ registerBoxes.forEach((box) =>
     event.stopPropagation();
   })
 );
-// registerInputsArray.forEach((input) =>
-//   input.addEventListener('click', function (event) {
-//     console.log(event.target);
-//     event.stopPropagation();
-//   })
-// );
 
 submitButton.addEventListener('click', submittingProgram);
