@@ -5,25 +5,34 @@ let operation;
 
 //BASIC FUNCTIONS
 function choosingDataType(box, parent, parentIndex, boxIndex) {
+  // Checking if user didnt clicked same element
   if (!box.classList[1]) {
-    // Checking if user didnt clicked same element
-    parent.forEach((item) => item.classList.remove("active-data-type"));
-    box.classList.add("active-data-type");
-    cursivesBettwenDataTypes[parentIndex].style.background = `linear-gradient(125deg, ${
-      boxIndex == 0 ? "green" : "black"
-    } 50%, rgba(9, 9, 121, 1) 40%, ${boxIndex == 0 ? "black" : "green"} 10%)`;
-    if (registers.length > 0) {
-      const valueOfElementToRemove = parent[0].offsetParent.offsetParent.children[1].textContent;
-      if (valueOfElementToRemove) {
-        const registerBoxesValues = registerBoxes.map((box) => box.textContent.trim().slice(0, -1));
-        const elementToRemove = registerBoxes[registerBoxesValues.indexOf(valueOfElementToRemove)];
-        elementToRemove.classList.remove("active");
-        registers = [...document.querySelectorAll(".active")];
+    const amountOfCells = choosedDataType.filter((dataType) => dataType.textContent == "CELL").length;
+    const clickedDiv = box.textContent;
+    if (clickedDiv == "CELL" && amountOfCells == 1) {
+      showingSweetAlert(
+        "Maximum amount of cells",
+        "For this type of operation you can have only 2 registers or register and cell!"
+      );
+    } else {
+      parent.forEach((item) => item.classList.remove("active-data-type"));
+      box.classList.add("active-data-type");
+      cursivesBettwenDataTypes[parentIndex].style.background = `linear-gradient(125deg, ${
+        boxIndex == 0 ? "green" : "black"
+      } 50%, rgba(9, 9, 121, 1) 40%, ${boxIndex == 0 ? "black" : "green"} 10%)`;
+      if (registers.length > 0) {
+        const valueOfElementToRemove = parent[0].offsetParent.offsetParent.children[1].textContent;
+        if (valueOfElementToRemove) {
+          const registerBoxesValues = registerBoxes.map((box) => box.textContent.trim().slice(0, -1));
+          const elementToRemove = registerBoxes[registerBoxesValues.indexOf(valueOfElementToRemove)];
+          elementToRemove.classList.remove("active");
+          registers = [...document.querySelectorAll(".active")];
+        }
       }
+      manageDataDivsContent(box, parent);
+      choosedDataType = gettingActiveDataTypes(dataTypesDivs);
+      refetchOperationBoxesValue();
     }
-    manageDataDivsContent(box, parent);
-    choosedDataType = gettingActiveDataTypes(dataTypesDivs);
-    refetchOperationBoxesValue();
   }
 }
 function choosingOperation() {
@@ -33,6 +42,7 @@ function choosingOperation() {
     optionsBoxes.forEach((box) => box.classList.remove("active-option"));
     this.classList.add("active-option");
     operationArrow.innerHTML = this.attributes[1].value; // we update operation Arrow with data-content value
+    const latestDataType = singleDataType;
     operation = this.textContent;
     operationPlace.textContent = " " + operation;
     switch (operation) {
@@ -49,12 +59,14 @@ function choosingOperation() {
         singleDataType = false;
         break;
     }
+    if (singleDataType !== latestDataType) {
+      refetchDataTypes();
+      choosedDataType = gettingActiveDataTypes(dataTypesDivs);
+      deleteAllActiveRegisters();
+      cleaningOperationBoxesValues();
+      refetchOperationBoxesValue();
+    }
   }
-  refetchDataTypes();
-  choosedDataType = gettingActiveDataTypes(dataTypesDivs);
-  deleteAllActiveRegisters();
-  cleaningOperationBoxesValues();
-  refetchOperationBoxesValue();
 }
 const choosingRegister = (e, box) => {
   const clickedDiv = e.target;
@@ -304,7 +316,7 @@ function operationsOnSubmit(operation, values) {
       const secondEightBytesXOR = [...transformValueToEightBytesFormat(secondValueBefore.value)];
       let transformedXORoperation = [];
       for (let i = 0; i < 8; i++) {
-        if (firstEightBytesXOR[i] || secondEightBytesXOR[i]) {
+        if (firstEightBytesXOR[i] == "1" || secondEightBytesXOR[i] == "1") {
           if (firstEightBytesXOR[i] == "1" && secondEightBytesXOR[i] == "1") {
             transformedXORoperation[i] = 0;
           } else {
@@ -314,8 +326,6 @@ function operationsOnSubmit(operation, values) {
           transformedXORoperation[i] = 0;
         }
       }
-      console.log(firstEightBytesXOR, secondEightBytesXOR);
-      console.log(transformedXORoperation);
       transformedXORoperation = parseInt(transformedXORoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
       transformedXORoperation =
         transformedXORoperation.length == 1 ? "0" + transformedXORoperation : transformedXORoperation;
