@@ -9,20 +9,14 @@ function choosingDataType(box, parent, parentIndex, boxIndex) {
     // Checking if user didnt clciked same element
     parent.forEach((item) => item.classList.remove("active-data-type"));
     box.classList.add("active-data-type");
-    cursivesBettwenDataTypes[
-      parentIndex
-    ].style.background = `linear-gradient(125deg, ${
+    cursivesBettwenDataTypes[parentIndex].style.background = `linear-gradient(125deg, ${
       boxIndex == 0 ? "green" : "black"
     } 50%, rgba(9, 9, 121, 1) 40%, ${boxIndex == 0 ? "black" : "green"} 10%)`;
     if (registers.length > 0) {
-      const valueOfElementToRemove =
-        parent[0].offsetParent.offsetParent.children[1].textContent;
+      const valueOfElementToRemove = parent[0].offsetParent.offsetParent.children[1].textContent;
       if (valueOfElementToRemove) {
-        const registerBoxesValues = registerBoxes.map((box) =>
-          box.textContent.trim().slice(0, -1)
-        );
-        const elementToRemove =
-          registerBoxes[registerBoxesValues.indexOf(valueOfElementToRemove)];
+        const registerBoxesValues = registerBoxes.map((box) => box.textContent.trim().slice(0, -1));
+        const elementToRemove = registerBoxes[registerBoxesValues.indexOf(valueOfElementToRemove)];
         elementToRemove.classList.remove("active");
         registers = [...document.querySelectorAll(".active")];
       }
@@ -34,10 +28,7 @@ function choosingDataType(box, parent, parentIndex, boxIndex) {
 }
 function choosingOperation() {
   if (!checkIfUserFillInputs()) {
-    showingSweetAlert(
-      "Fill Inputs",
-      "First you need to fill all inputs and choosed data type register or cell"
-    );
+    showingSweetAlert("Fill Inputs", "First you need to fill all inputs and choosed data type register or cell");
   } else {
     optionsBoxes.forEach((box) => box.classList.remove("active-option"));
     this.classList.add("active-option");
@@ -70,13 +61,9 @@ const choosingRegister = (e, box) => {
   const value = clickedDiv.textContent.trim().slice(0, -1);
 
   const HTMLElementsShowingValue = gettingSpanArray(operationBoxes);
-  const HTMLElementsValues = HTMLElementsShowingValue.map(
-    (item) => item.textContent
-  );
+  const HTMLElementsValues = HTMLElementsShowingValue.map((item) => item.textContent);
 
-  const maximumRegisterBasedOnDataType = choosedDataType.filter(
-    (item) => item.textContent == "REGISTER"
-  ).length;
+  const maximumRegisterBasedOnDataType = choosedDataType.filter((item) => item.textContent == "REGISTER").length;
   if (clickedDiv.localName == "div") {
     if (checkIfUserFillInputs()) {
       if (!clickedDiv.classList[1]) {
@@ -84,7 +71,7 @@ const choosingRegister = (e, box) => {
           clickedDiv.classList.add("active");
           const indexOfFirstFreeSpace = HTMLElementsValues.indexOf("");
           HTMLElementsShowingValue[indexOfFirstFreeSpace].textContent = value;
-          HTMLElementsShowingValue[indexOfFirstFreeSpace].setAttribute("data-value",`${clickedDiv.children[0].value}`);
+          HTMLElementsShowingValue[indexOfFirstFreeSpace].setAttribute("data-value", `${clickedDiv.children[0].value}`);
         } else {
           showingSweetAlert(
             "Maxium amount of registers",
@@ -103,59 +90,49 @@ const choosingRegister = (e, box) => {
   registers = [...document.querySelectorAll(".register-box-wrapper .active")];
 };
 const submittingProgram = () => {
-  const maximumRegisterBasedOnDataType = choosedDataType.filter(
-    (item) => item.textContent == "REGISTER"
-  ).length;
+  const maximumRegisterBasedOnDataType = choosedDataType.filter((item) => item.textContent == "REGISTER").length;
   if (operation) {
     if (maximumRegisterBasedOnDataType == registers.length) {
-      let cellArray = operationBoxes.filter(
-        (item) => item.localName == "input"
-      );
+      let cellArray = operationBoxes.filter((item) => item.localName == "input");
       cellArray = cellArray.map((input) => input.value);
       if (cellArray.every((value) => value.length == 4)) {
-        const values = operationBoxes.map((value,index) =>{
-         return value.localName == "span" ? value.textContent + ":" +  operationBoxes[index].dataset.value : value.value;
+        const values = operationBoxes.map((value, index) => {
+          return value.localName == "span"
+            ? value.textContent + ":" + operationBoxes[index].dataset.value
+            : value.value;
         });
         operationsOnSubmit(operation, values);
       } else {
-        showingSweetAlert(
-          "Not correct values of cell",
-          "You need to write cell value"
-        );
+        showingSweetAlert("Not correct values of cell", "You need to write cell value");
       }
     } else {
-      showingSweetAlert(
-        "Not choosed registers",
-        "Change data type or choose correct amount of registers"
-      );
+      showingSweetAlert("Not choosed registers", "Change data type or choose correct amount of registers");
     }
   } else {
-    showingSweetAlert(
-      "Not choosed operation",
-      "You need to choose operation to submit program"
-    );
+    showingSweetAlert("Not choosed operation", "You need to choose operation to submit program");
   }
 };
 // ADDITIONAL + SECURE
 const refetchDataTypes = () => {
   // we use it bettwen switching operation
-  dataTypesDivs = [
-    ...document.querySelectorAll(".visible .data-type-wrapper"),
-  ].map((item) => [item.children[0], item.children[2]]);
+  dataTypesDivs = [...document.querySelectorAll(".visible .data-type-wrapper")].map((item) => [
+    item.children[0],
+    item.children[2],
+  ]);
 };
 const refetchOperationBoxesValue = () => {
-  operationBoxes = [
-    ...document.querySelectorAll(".visible .result-box .box-value"),
-  ];
+  operationBoxes = [...document.querySelectorAll(".visible .result-box .box-value")];
 };
-const refreshDatasetsOfUsedBoxes = (firstValue,secondValue) =>{
-  if(registers.length == 2){
-    operationBoxes[0].setAttribute('data-value', firstValue);
-    operationBoxes[1].setAttribute('data-value', secondValue);
-   } else  if( registers.length ==1){
-    const indexOfSpan = operationBoxes.findIndex(item=>item.localName=="span");
-    indexOfSpan == 0 ? operationBoxes[indexOfSpan].setAttribute('data-value',firstValue ) : operationBoxes[indexOfSpan].setAttribute('data-value',secondValue);
-   }
+const refreshDatasetsOfUsedBoxes = (firstValue, secondValue) => {
+  if (registers.length == 2) {
+    operationBoxes[0].setAttribute("data-value", firstValue);
+    operationBoxes[1].setAttribute("data-value", secondValue);
+  } else if (registers.length == 1) {
+    const indexOfSpan = operationBoxes.findIndex((item) => item.localName == "span");
+    indexOfSpan == 0
+      ? operationBoxes[indexOfSpan].setAttribute("data-value", firstValue)
+      : operationBoxes[indexOfSpan].setAttribute("data-value", secondValue);
+  }
 };
 const manageDataDivsContent = (element, parent) => {
   const elementWrapper = element.parentElement.parentElement;
@@ -191,10 +168,8 @@ const counterOfActiveClasses = (array) => {
 function gettingActiveDataTypes(array) {
   const arrayWithActiveDataTypes = [];
   array.forEach((divsArray) =>
-    counterOfActiveClasses(divsArray) ?
-     arrayWithActiveDataTypes.push(
-          ...divsArray.filter((item) => item.classList[1])
-        )
+    counterOfActiveClasses(divsArray)
+      ? arrayWithActiveDataTypes.push(...divsArray.filter((item) => item.classList[1]))
       : false
   );
   return arrayWithActiveDataTypes;
@@ -223,9 +198,7 @@ function deleteAllActiveRegisters() {
   // with clearing registers we clear values of boxes
 }
 function gettingSpanArray(array) {
-  const transformedArray = array.filter(
-    (htmlElement) => htmlElement.localName == "span"
-  );
+  const transformedArray = array.filter((htmlElement) => htmlElement.localName == "span");
   return transformedArray;
 }
 function cleaningOperationBoxesValues() {
@@ -235,24 +208,24 @@ function cleaningOperationBoxesValues() {
   });
 }
 function operationsOnSubmit(operation, values) {
-  const firstValueType = values[0].includes(":") ? "register"  : "cell";
-  const secondValueType =  values.length  == 2  ? values[1].includes(":") ? "register"  : "cell" : false ;
-   //Before and after operation
+  const firstValueType = values[0].includes(":") ? "register" : "cell";
+  const secondValueType = values.length == 2 ? (values[1].includes(":") ? "register" : "cell") : false;
+  //Before and after operation
   const firstValueBefore = {
-    value : firstValueType == "register" ? values[0].slice(3,5) : workingOnCell(values[0])?.value,
-    name : firstValueType == "register" ? values[0].slice(0,2) : values[0].toUpperCase(),
-  } ;
+    value: firstValueType == "register" ? values[0].slice(3, 5) : workingOnCell(values[0])?.value,
+    name: firstValueType == "register" ? values[0].slice(0, 2) : values[0].toUpperCase(),
+  };
   const secondValueBefore = {
-    value : secondValueType == "register" ? values[1].slice(3,5) : workingOnCell(values[1])?.value,
-    name :  secondValueType == "register" ? values[1].slice(0,2) : values[1]?.toUpperCase(),
+    value: secondValueType == "register" ? values[1].slice(3, 5) : workingOnCell(values[1])?.value,
+    name: secondValueType == "register" ? values[1].slice(0, 2) : values[1]?.toUpperCase(),
   };
   const firstValueAfter = {
-    value : "",
-    name : firstValueBefore.name
-  };
-  const secondValueAfter ={
     value: "",
-    name : secondValueBefore.name
+    name: firstValueBefore.name,
+  };
+  const secondValueAfter = {
+    value: "",
+    name: secondValueBefore.name,
   };
   switch (operation) {
     case "MOV":
@@ -260,65 +233,75 @@ function operationsOnSubmit(operation, values) {
       secondValueAfter.value = firstValueBefore.value;
       break;
     case "EXH":
-        firstValueAfter.value = secondValueBefore.value;
-        secondValueAfter.value = firstValueBefore.value;  
-        break;
-    case "NOT" :
-        let firstFourBytesBin = parseInt(firstValueBefore.value[0],16).toString(2);
-        let nextFourBytesBin =  parseInt(firstValueBefore.value[1],16).toString(2);
-        if(firstFourBytesBin){                // We want format 0000 (4bytes showing)
-          const zeroString = "0"; 
-          firstFourBytesBin = zeroString.repeat(4-firstFourBytesBin.length ) + firstFourBytesBin;
-        }
-        if(nextFourBytesBin){
-          const zeroString = "0"; 
-          nextFourBytesBin = zeroString.repeat(4-nextFourBytesBin.length ) + nextFourBytesBin;
-        }
-        const binaryValue  =  firstFourBytesBin.concat(nextFourBytesBin);
-        const bits = [...binaryValue];
-        const negatedBits =  bits.map(byte => byte == 1 ? 0 : 1);
-        const negatedBinary = parseInt(negatedBits.join(""), 2).toString(16).toUpperCase();
-        firstValueAfter.value = negatedBinary.length == 1 ? "0"+negatedBinary : negatedBinary; 
-         break;
+      firstValueAfter.value = secondValueBefore.value;
+      secondValueAfter.value = firstValueBefore.value;
+      break;
+    case "NOT":
+      let firstFourBytesBin = parseInt(firstValueBefore.value[0], 16).toString(2);
+      let nextFourBytesBin = parseInt(firstValueBefore.value[1], 16).toString(2);
+      if (firstFourBytesBin) {
+        // We want format 0000 (4bytes showing)
+        const zeroString = "0";
+        firstFourBytesBin = zeroString.repeat(4 - firstFourBytesBin.length) + firstFourBytesBin;
+      }
+      if (nextFourBytesBin) {
+        const zeroString = "0";
+        nextFourBytesBin = zeroString.repeat(4 - nextFourBytesBin.length) + nextFourBytesBin;
+      }
+      const binaryValue = firstFourBytesBin.concat(nextFourBytesBin);
+      const bits = [...binaryValue];
+      const negatedBits = bits.map((byte) => (byte == 1 ? 0 : 1));
+      const negatedBinary = parseInt(negatedBits.join(""), 2).toString(16).toUpperCase();
+      firstValueAfter.value = negatedBinary.length == 1 ? "0" + negatedBinary : negatedBinary;
+      break;
     case "INC":
       let decimalData = parseInt(firstValueBefore.value, 16);
-      decimalData++;
-      let incrementedDataHex = decimalData.toString('16');
-      incrementedDataHex.length == 1 ? incrementedDataHex = "0" + incrementedDataHex : "";
-      firstValueAfter.value  = incrementedDataHex.toUpperCase();
-      break;  
+      decimalData < 255 ? decimalData++ : false; 
+      let incrementedDataHex = decimalData.toString("16");
+      incrementedDataHex.length == 1 ? (incrementedDataHex = "0" + incrementedDataHex) : "";
+      firstValueAfter.value = incrementedDataHex.toUpperCase();
+      break;
+    case "DEC":
+      let decData = parseInt(firstValueBefore.value, 16);
+      decData > 0 ? decData-- : false; 
+      let decrementedDataHex = decData.toString("16");
+      decrementedDataHex.length == 1 ? (decrementedDataHex = "0" + decrementedDataHex) : "";
+      firstValueAfter.value = decrementedDataHex.toUpperCase();
+      break;
     default:
       console.log("Something went wrong!");
       break;
   }
   //After operation we changed our datas and showing results
 
-  if(firstValueType == "register"){
-    const index = registerBoxes.findIndex(item => item.textContent.trim().slice(0,2) == firstValueBefore.name);
-    registerBoxes[index].children[0].value  = firstValueAfter.value;
-  } else { // Cell
-    const index = cells.findIndex(item => item.name == firstValueAfter.name);
+  if (firstValueType == "register") {
+    const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == firstValueBefore.name);
+    registerBoxes[index].children[0].value = firstValueAfter.value;
+  } else {
+    // Cell
+    const index = cells.findIndex((item) => item.name == firstValueAfter.name);
     cells[index].value = firstValueAfter.value;
   }
 
-  if(secondValueType){
-    if(secondValueType == "register"){
-      const index = registerBoxes.findIndex(item => item.textContent.trim().slice(0,2)  == secondValueBefore.name);
-      registerBoxes[index].children[0].value  = secondValueAfter.value;
-    } else { // Cell
-      const index = cells.findIndex(item => item.name == secondValueAfter.name);
-      cells[index].value = secondValueAfter.value;  
+  if (secondValueType) {
+    if (secondValueType == "register") {
+      const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == secondValueBefore.name);
+      registerBoxes[index].children[0].value = secondValueAfter.value;
+    } else {
+      // Cell
+      const index = cells.findIndex((item) => item.name == secondValueAfter.name);
+      cells[index].value = secondValueAfter.value;
     }
   }
-  showingOperationsResult(operation, firstValueBefore,secondValueBefore, firstValueAfter, secondValueAfter);
-  //at the end we need to refresh datasets to allow resubmiting without choosing 
-  refreshDatasetsOfUsedBoxes(firstValueAfter.value,secondValueAfter.value);
-  }
+  showingOperationsResult(operation, firstValueBefore, secondValueBefore, firstValueAfter, secondValueAfter);
+  //at the end we need to refresh datasets to allow resubmiting without choosing
+  refreshDatasetsOfUsedBoxes(firstValueAfter.value, secondValueAfter.value);
+}
 //Config for loading website;
 window.addEventListener("load", function () {
   refetchDataTypes();
   choosedDataType = gettingActiveDataTypes(dataTypesDivs);
-  setTimeout(()=>{
+  setTimeout(() => {
     fillingCells();
-  },1000);
+  }, 1000);
 });
