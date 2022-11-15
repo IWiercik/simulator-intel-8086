@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.1" />
     <link rel="stylesheet" href="./style/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap"/>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./javascript/main.js" defer></script>
-    <script src="./javascript/downloadHTMLElements.js" defer></script>
+    <script src="./javascript/DOM.js" defer></script>
     <script src="./javascript/sweetAlerts.js"></script>
     <script src="./javascript/cells.js"></script>
     <title>INTEL 8086 Simulation</title>
@@ -138,19 +138,40 @@
 
         <div class="options-box-container">
           <h2 class="big-string">OPTIONS:</h2>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="-->">MOV</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="--><br/><--">EXH</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="!">NOT</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="++">INC</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="--">DEC</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="&&">AND</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="||">OR</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="!||">XOR</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="+">ADD</div></div>
-          <div class="options-box-wrapper"><div class="options-box-content" data-content="/">SUB</div></div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="-->">MOV</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="--><br/><--">EXH</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="!">NOT</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="++">INC</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="--">DEC</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="&&">AND</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="||">OR</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="!||">XOR</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="+">ADD</div>
+          </div>
+          <div class="options-box-wrapper">
+            <div class="options-box-content" data-content="-">SUB</div>
+          </div>
         </div>
 
         <div class="result-box-container">
+
           <h2 class="big-string" id="result">OPERATION:</h2>
           <h3>OPERATION:<span class="operation-place"></span></h3>
           <div class="result-boxes-container multi-operation visible">
@@ -164,6 +185,7 @@
               </div>
               <span class="box-value"></span>
             </div>
+
             <div class="result-box-arrow"></div>
             <div class="result-box" id="multi-box">
               <div class="data-type-wrapper">
@@ -176,10 +198,11 @@
               <span class="box-value"></span>
             </div>
           </div>
+
           <div class="result-boxes-container single-operation">
             <div class="result-box" id="single-box">
               <div class="data-type-wrapper">
-                <div class="data-type-box  active-data-type">REGISTER</div>
+                <div class="data-type-box active-data-type">REGISTER</div>
                 <div class="cursive-parent">
                   <div class="cursive"></div>
                 </div>
@@ -188,9 +211,9 @@
               <span class="box-value"></span>
             </div>
           </div>
+
           <button class="confirm-operation">CONFIRM OPERATION</button>
         </div>
-
       </div>
     </div>
   </body>

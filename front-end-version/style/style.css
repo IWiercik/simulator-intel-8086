@@ -1,7 +1,6 @@
 *,
 *::before,
 *::after {
-    -webkit-box-sizing: inherit;
     box-sizing: inherit;
     margin: 0;
     padding: 0;
@@ -27,7 +26,7 @@ body {
     height: 90%;
     padding-top: 10px;
     padding-bottom: 10px;
-    gap: 15px;
+    gap: 10px;
     align-self: center;
     justify-self: center;
     position: relative;
@@ -38,7 +37,7 @@ body {
 }
 
 .big-string {
-    font-size: 40px;
+    font-size: 30px;
     color: black;
     text-align: center;
     width: 100%;
@@ -52,11 +51,6 @@ body {
     justify-content: center;
     align-content: center;
     position: relative;
-    /* z-index: 1; */
-}
-
-.register-box-container input {
-    /* z-index: 100; */
 }
 
 .register-box-wrapper {
