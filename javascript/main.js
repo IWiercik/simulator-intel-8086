@@ -1,3 +1,4 @@
+//Global data
 let registers = [];
 let choosedDataType = [];
 let singleDataType = false;
@@ -7,6 +8,7 @@ let operation;
 function choosingDataType(box, parent, parentIndex, boxIndex) {
   // Checking if user didnt clicked same element
   if (!box.classList[1]) {
+    //Program can have only 1 cell
     const amountOfCells = choosedDataType.filter((dataType) => dataType.textContent == "CELL").length;
     const clickedDiv = box.textContent;
     if (clickedDiv == "CELL" && amountOfCells == 1) {
@@ -20,8 +22,8 @@ function choosingDataType(box, parent, parentIndex, boxIndex) {
       cursivesBettwenDataTypes[parentIndex].style.background = `linear-gradient(125deg, ${
         boxIndex == 0 ? "green" : "black"
       } 50%, rgba(9, 9, 121, 1) 40%, ${boxIndex == 0 ? "black" : "green"} 10%)`;
-      if (registers.length > 0) {
-        const valueOfElementToRemove = parent[0].offsetParent.offsetParent.children[1].textContent;
+      if (registers.length > 0) { //When switching data-type we need to clear old data
+        const valueOfElementToRemove = parent[0].offsetParent.offsetParent.children[1].textContent; // from wrapper we choose "this" data
         if (valueOfElementToRemove) {
           const registerBoxesValues = registerBoxes.map((box) => box.textContent.trim().slice(0, -1));
           const elementToRemove = registerBoxes[registerBoxesValues.indexOf(valueOfElementToRemove)];
@@ -42,7 +44,7 @@ function choosingOperation() {
     optionsBoxes.forEach((box) => box.classList.remove("active-option"));
     this.classList.add("active-option");
     operationArrow.innerHTML = this.attributes[1].value; // we update operation Arrow with data-content value
-    const latestDataType = singleDataType;
+    const latestDataType = singleDataType; // Used for clearning/not clearning data bettwen switching options
     operation = this.textContent;
     operationPlace.textContent = " " + operation;
     switch (operation) {
@@ -60,6 +62,7 @@ function choosingOperation() {
         break;
     }
     if (singleDataType !== latestDataType) {
+      // When we change operation to other dataType we need to refetch data to not hold old data
       refetchDataTypes();
       choosedDataType = gettingActiveDataTypes(dataTypesDivs);
       deleteAllActiveRegisters();
@@ -68,17 +71,17 @@ function choosingOperation() {
     }
   }
 }
-const choosingRegister = (e, box) => {
+const choosingRegister = (e) => {
   const clickedDiv = e.target;
   const value = clickedDiv.textContent.trim().slice(0, -1);
 
   const HTMLElementsShowingValue = gettingSpanArray(operationBoxes);
   const HTMLElementsValues = HTMLElementsShowingValue.map((item) => item.textContent);
 
-  const maximumRegisterBasedOnDataType = choosedDataType.filter((item) => item.textContent == "REGISTER").length;
+  const maximumRegisterBasedOnDataType = choosedDataType.filter((item) => item.textContent == "REGISTER").length; // 2 registers are max
   if (clickedDiv.localName == "div") {
     if (checkIfUserFillInputs()) {
-      if (!clickedDiv.classList[1]) {
+      if (!clickedDiv.classList[1]) { // Not choosed register
         if (registers.length < maximumRegisterBasedOnDataType) {
           clickedDiv.classList.add("active");
           const indexOfFirstFreeSpace = HTMLElementsValues.indexOf("");
@@ -90,7 +93,7 @@ const choosingRegister = (e, box) => {
             "You reached maximum amount of register based on choosed data-type"
           );
         }
-      } else {
+      } else { // Clicked choosed register
         clickedDiv.classList.remove("active");
         const indexOfItemToRemove = HTMLElementsValues.indexOf(value);
         HTMLElementsShowingValue[indexOfItemToRemove].textContent = "";
@@ -107,11 +110,11 @@ const submittingProgram = () => {
     if (maximumRegisterBasedOnDataType == registers.length) {
       let cellArray = operationBoxes.filter((item) => item.localName == "input");
       cellArray = cellArray.map((input) => input.value);
-      if (cellArray.every((value) => value.length == 4)) {
+      if (cellArray.every((value) => value.length == 4)) { // Check if format is 0000, 0F0F
         const values = operationBoxes.map((value, index) => {
           return value.localName == "span"
-            ? value.textContent + ":" + operationBoxes[index].dataset.value
-            : value.value;
+            ? value.textContent + ":" + operationBoxes[index].dataset.value // span
+            : value.value; // input
         });
         operationsOnSubmit(operation, values);
       } else {
@@ -125,16 +128,6 @@ const submittingProgram = () => {
   }
 };
 // ADDITIONAL + SECURE
-const refetchDataTypes = () => {
-  // we use it bettwen switching operation
-  dataTypesDivs = [...document.querySelectorAll(".visible .data-type-wrapper")].map((item) => [
-    item.children[0],
-    item.children[2],
-  ]);
-};
-const refetchOperationBoxesValue = () => {
-  operationBoxes = [...document.querySelectorAll(".visible .result-box .box-value")];
-};
 const refreshDatasetsOfUsedBoxes = (firstValue, secondValue) => {
   if (registers.length == 2) {
     operationBoxes[0].setAttribute("data-value", firstValue);
@@ -150,28 +143,19 @@ const manageDataDivsContent = (element, parent) => {
   const elementWrapper = element.parentElement.parentElement;
   let activeDiv = parent.filter((div) => div.classList[1]);
   if (activeDiv[0]?.textContent == "REGISTER") {
-    //Remove last child
     elementWrapper.removeChild(elementWrapper.lastElementChild);
-    elementWrapper.appendChild(createSpan());
+    elementWrapper.appendChild(createSpan()); // data-box(span) for Register
   } else if (activeDiv[0]?.textContent == "CELL") {
-    //Remove all childs
     elementWrapper.removeChild(elementWrapper.lastElementChild);
-    elementWrapper.appendChild(createInput());
+    elementWrapper.appendChild(createInput()); // data-box(input) for Cell
   }
 };
 const checkIfUserFillInputs = () => {
-  const areAllFieldsFilledCorrectly = registerInputsArray.every((item) => {
+  const areAllFieldsFilledCorrectly = registersInputs.every((item) => {
     return item.value.length == 2;
   });
   return areAllFieldsFilledCorrectly;
 };
-function listenerOnHexadecimalFormat() {
-  let regEx = /^[0-9a-fA-F]+$/;
-  let isHex = regEx.test(this.value.toString());
-  if (!isHex) {
-    this.value = this.value.slice(0, -1);
-  }
-}
 const counterOfActiveClasses = (array) => {
   let counter = 0;
   array.forEach((item) => (item.classList[1] ? counter++ : false)); //classList[1] active/undefined
@@ -185,24 +169,6 @@ function gettingActiveDataTypes(array) {
       : false
   );
   return arrayWithActiveDataTypes;
-}
-function createInput() {
-  const input = document.createElement("input");
-  Object.assign(input, {
-    type: "text",
-    name: "register-value",
-    className: "box-value",
-    maxLength: 4,
-    minLength: 4,
-    required: true,
-  });
-  input.addEventListener("input", listenerOnHexadecimalFormat);
-  return input;
-}
-function createSpan() {
-  const span = document.createElement("span");
-  span.setAttribute("class", "box-value");
-  return span;
 }
 function deleteAllActiveRegisters() {
   registers.forEach((item) => item.classList.remove("active"));
@@ -303,7 +269,7 @@ function operationsOnSubmit(operation, values) {
       const secondEightBytesOR = [...transformValueToEightBytesFormat(secondValueBefore.value)];
       let transformedORoperation = [];
       for (let i = 0; i < 8; i++) {
-        transformedORoperation[i] = firstEightBytesOR || secondEightBytesOR ? 1 : 0;
+        transformedORoperation[i] = firstEightBytesOR[i] == "1" || secondEightBytesOR[i] == "1" ? 1 : 0;
       }
       transformedORoperation = parseInt(transformedORoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
       transformedORoperation =
