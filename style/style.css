@@ -25,10 +25,10 @@ body {
 }
 
 .body-container-center {
-    max-width: 600px;
-    max-height: 90%;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    width: 600px;
+    height: 90%;
+    padding-top: 10px;
+    padding-bottom: 10px;
     gap: 10px;
     align-self: center;
     justify-self: center;

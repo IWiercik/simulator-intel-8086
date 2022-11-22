@@ -22,7 +22,8 @@ function choosingDataType(box, parent, parentIndex, boxIndex) {
       cursivesBettwenDataTypes[parentIndex].style.background = `linear-gradient(125deg, ${
         boxIndex == 0 ? "green" : "black"
       } 50%, rgba(9, 9, 121, 1) 40%, ${boxIndex == 0 ? "black" : "green"} 10%)`;
-      if (registers.length > 0) { //When switching data-type we need to clear old data
+      if (registers.length > 0) {
+        //When switching data-type we need to clear old data
         const valueOfElementToRemove = parent[0].offsetParent.offsetParent.children[1].textContent; // from wrapper we choose "this" data
         if (valueOfElementToRemove) {
           const registerBoxesValues = registerBoxes.map((box) => box.textContent.trim().slice(0, -1));
@@ -81,7 +82,8 @@ const choosingRegister = (e) => {
   const maximumRegisterBasedOnDataType = choosedDataType.filter((item) => item.textContent == "REGISTER").length; // 2 registers are max
   if (clickedDiv.localName == "div") {
     if (checkIfUserFillInputs()) {
-      if (!clickedDiv.classList[1]) { // Not choosed register
+      if (!clickedDiv.classList[1]) {
+        // Not choosed register
         if (registers.length < maximumRegisterBasedOnDataType) {
           clickedDiv.classList.add("active");
           const indexOfFirstFreeSpace = HTMLElementsValues.indexOf("");
@@ -93,7 +95,8 @@ const choosingRegister = (e) => {
             "You reached maximum amount of register based on choosed data-type"
           );
         }
-      } else { // Clicked choosed register
+      } else {
+        // Clicked choosed register
         clickedDiv.classList.remove("active");
         const indexOfItemToRemove = HTMLElementsValues.indexOf(value);
         HTMLElementsShowingValue[indexOfItemToRemove].textContent = "";
@@ -110,7 +113,8 @@ const submittingProgram = () => {
     if (maximumRegisterBasedOnDataType == registers.length) {
       let cellArray = operationBoxes.filter((item) => item.localName == "input");
       cellArray = cellArray.map((input) => input.value);
-      if (cellArray.every((value) => value.length == 4)) { // Check if format is 0000, 0F0F
+      if (cellArray.every((value) => value.length == 4)) {
+        // Check if format is 0000, 0F0F
         const values = operationBoxes.map((value, index) => {
           return value.localName == "span"
             ? value.textContent + ":" + operationBoxes[index].dataset.value // span
@@ -201,7 +205,6 @@ function transformValueToEightBytesFormat(value) {
   return binaryValue;
 }
 function operationsOnSubmit(operation, values) {
-  let operationIsValid = true;
   const firstValueType = values[0].includes(":") ? "register" : "cell";
   const secondValueType = values.length == 2 ? (values[1].includes(":") ? "register" : "cell") : false;
   //Before and after operation
@@ -231,95 +234,118 @@ function operationsOnSubmit(operation, values) {
       secondValueAfter.value = firstValueBefore.value;
       break;
     case "NOT":
-      const binaryValue = transformValueToEightBytesFormat(firstValueBefore.value);
-      const bits = [...binaryValue];
-      const negatedBits = bits.map((byte) => (byte == 1 ? 0 : 1));
-      const negatedBinary = parseInt(negatedBits.join(""), 2).toString(16).toUpperCase();
-      firstValueAfter.value = negatedBinary.length == 1 ? "0" + negatedBinary : negatedBinary;
+      {
+        const binaryValue = transformValueToEightBytesFormat(firstValueBefore.value);
+        const bits = [...binaryValue];
+        const negatedBits = bits.map((byte) => (byte == 1 ? 0 : 1));
+        const negatedBinary = parseInt(negatedBits.join(""), 2).toString(16).toUpperCase();
+        firstValueAfter.value = negatedBinary.length == 1 ? "0" + negatedBinary : negatedBinary;
+      }
       break;
     case "INC":
-      let decimalData = parseInt(firstValueBefore.value, 16);
-      decimalData < 255 ? decimalData++ : false;
-      let incrementedDataHex = decimalData.toString("16");
-      incrementedDataHex.length == 1 ? (incrementedDataHex = "0" + incrementedDataHex) : "";
-      firstValueAfter.value = incrementedDataHex.toUpperCase();
+      {
+        let decimalData = parseInt(firstValueBefore.value, 16);
+        decimalData++;
+        let incrementedDataHex = decimalData.toString("16");
+        incrementedDataHex.length == 1 ? (incrementedDataHex = "0" + incrementedDataHex) : "";
+        incrementedDataHex =
+          incrementedDataHex[incrementedDataHex.length - 2] + incrementedDataHex[incrementedDataHex.length - 1]; // we need to get the last 2 position cause overfloat
+        firstValueAfter.value = incrementedDataHex.toUpperCase();
+      }
       break;
     case "DEC":
-      let decData = parseInt(firstValueBefore.value, 16);
-      decData > 0 ? decData-- : false;
-      let decrementedDataHex = decData.toString("16");
-      decrementedDataHex.length == 1 ? (decrementedDataHex = "0" + decrementedDataHex) : "";
-      firstValueAfter.value = decrementedDataHex.toUpperCase();
+      {
+        let decData = parseInt(firstValueBefore.value, 16);
+        let result;
+        if (decData - 1 < 0) {
+          // we need to take care about underflow
+          result = "FF";
+        } else {
+          decData--;
+          let decrementedDataHex = decData.toString("16");
+          decrementedDataHex.length == 1 ? (result = "0" + decrementedDataHex) : (result = decrementedDataHex);
+        }
+        firstValueAfter.value = result.toUpperCase();
+      }
       break;
     case "AND":
-      const firstEightBytes = [...transformValueToEightBytesFormat(firstValueBefore.value)];
-      const secondEightBytes = [...transformValueToEightBytesFormat(secondValueBefore.value)];
-      let transformedANDoperation = [];
-      for (let i = 0; i < 8; i++) {
-        transformedANDoperation[i] = firstEightBytes[i] * secondEightBytes[i];
+      {
+        const firstEightBytes = [...transformValueToEightBytesFormat(firstValueBefore.value)];
+        const secondEightBytes = [...transformValueToEightBytesFormat(secondValueBefore.value)];
+        let transformedOperation = [];
+        for (let i = 0; i < 8; i++) {
+          transformedOperation[i] = firstEightBytes[i] * secondEightBytes[i];
+        }
+        transformedOperation = parseInt(transformedOperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
+        transformedOperation = transformedOperation.length == 1 ? "0" + transformedOperation : transformedOperation;
+        firstValueAfter.value = transformedOperation;
+        secondValueAfter.value = secondValueBefore.value;
       }
-      transformedANDoperation = parseInt(transformedANDoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
-      transformedANDoperation =
-        transformedANDoperation.length == 1 ? "0" + transformedANDoperation : transformedANDoperation;
-      firstValueAfter.value = transformedANDoperation;
-      secondValueAfter.value = transformedANDoperation;
       break;
     case "OR":
-      const firstEightBytesOR = [...transformValueToEightBytesFormat(firstValueBefore.value)];
-      const secondEightBytesOR = [...transformValueToEightBytesFormat(secondValueBefore.value)];
-      let transformedORoperation = [];
-      for (let i = 0; i < 8; i++) {
-        transformedORoperation[i] = firstEightBytesOR[i] == "1" || secondEightBytesOR[i] == "1" ? 1 : 0;
+      {
+        const firstEightBytes = [...transformValueToEightBytesFormat(firstValueBefore.value)];
+        const secondEightBytes = [...transformValueToEightBytesFormat(secondValueBefore.value)];
+        let transformedOperation = [];
+        for (let i = 0; i < 8; i++) {
+          transformedOperation[i] = firstEightBytes[i] == "1" || secondEightBytes[i] == "1" ? 1 : 0;
+        }
+        transformedOperation = parseInt(transformedOperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
+        transformedOperation = transformedOperation.length == 1 ? "0" + transformedOperation : transformedOperation;
+        firstValueAfter.value = transformedOperation;
+        secondValueAfter.value = secondValueBefore.value;
       }
-      transformedORoperation = parseInt(transformedORoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
-      transformedORoperation =
-        transformedORoperation.length == 1 ? "0" + transformedORoperation : transformedORoperation;
-      firstValueAfter.value = transformedORoperation;
-      secondValueAfter.value = transformedORoperation;
       break;
     case "XOR":
-      const firstEightBytesXOR = [...transformValueToEightBytesFormat(firstValueBefore.value)];
-      const secondEightBytesXOR = [...transformValueToEightBytesFormat(secondValueBefore.value)];
-      let transformedXORoperation = [];
-      for (let i = 0; i < 8; i++) {
-        if (firstEightBytesXOR[i] == "1" || secondEightBytesXOR[i] == "1") {
-          if (firstEightBytesXOR[i] == "1" && secondEightBytesXOR[i] == "1") {
-            transformedXORoperation[i] = 0;
+      {
+        const firstEightBytes = [...transformValueToEightBytesFormat(firstValueBefore.value)];
+        const secondEightBytes = [...transformValueToEightBytesFormat(secondValueBefore.value)];
+        let transformedOperation = [];
+        for (let i = 0; i < 8; i++) {
+          if (firstEightBytes[i] == "1" || secondEightBytes[i] == "1") {
+            if (firstEightBytes[i] == "1" && secondEightBytes[i] == "1") {
+              transformedOperation[i] = 0;
+            } else {
+              transformedOperation[i] = 1;
+            }
           } else {
-            transformedXORoperation[i] = 1;
+            transformedOperation[i] = 0;
           }
-        } else {
-          transformedXORoperation[i] = 0;
         }
+        transformedOperation = parseInt(transformedOperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
+        transformedOperation = transformedOperation.length == 1 ? "0" + transformedOperation : transformedOperation;
+        firstValueAfter.value = transformedOperation;
+        secondValueAfter.value = secondValueBefore.value;
       }
-      transformedXORoperation = parseInt(transformedXORoperation.join(""), 2).toString(16).toUpperCase(); // Change array into string
-      transformedXORoperation =
-        transformedXORoperation.length == 1 ? "0" + transformedXORoperation : transformedXORoperation;
-      firstValueAfter.value = transformedXORoperation;
-      secondValueAfter.value = transformedXORoperation;
       break;
     case "ADD":
-      const decFirstData = parseInt(firstValueBefore.value, 16);
-      const decSecData = parseInt(secondValueBefore.value, 16);
-      if (decFirstData + decSecData <= 255) {
-        let result = (decFirstData + decSecData).toString("16").toUpperCase();
+      {
+        const decFirstData = parseInt(firstValueBefore.value, 16);
+        const decSecData = parseInt(secondValueBefore.value, 16);
+        let result = (decFirstData + decSecData).toString(16).toUpperCase();
+        result = result[result.length - 2] + result[result.length - 1]; // we need to get the last 2 position cause overfloat
         result.length == 2 ? "" : (result = "0" + result);
         firstValueAfter.value = result;
-        secondValueAfter.value = result;
-      } else {
-        operationIsValid = false;
+        secondValueAfter.value = secondValueBefore.value;
       }
       break;
     case "SUB":
-      const decFirstDataSUB = parseInt(firstValueBefore.value, 16);
-      const decSecDataSUB = parseInt(secondValueBefore.value, 16);
-      if (decFirstDataSUB - decSecDataSUB >= 0) {
-        let result = (decFirstDataSUB - decSecDataSUB).toString("16").toUpperCase();
+      {
+        const decFirstData = parseInt(firstValueBefore.value, 16);
+        const decSecData = parseInt(secondValueBefore.value, 16);
+        let result;
+        if (decFirstData - decSecData >= 0) {
+          result = (decFirstData - decSecData).toString("16").toUpperCase();
+        } else {
+          // Underflow
+          const higherValue = decFirstData < decSecData ? decSecData : decFirstData;
+          const lowerValue = decFirstData > decSecData ? decSecData : decFirstData;
+          const valueAfterCalculation = 255 - higherValue + 1; // we need to make some calculations to handle the underflow
+          result = (lowerValue + valueAfterCalculation).toString("16").toUpperCase();
+        }
         result.length == 2 ? "" : (result = "0" + result);
         firstValueAfter.value = result;
-        secondValueAfter.value = result;
-      } else {
-        operationIsValid = false;
+        secondValueAfter.value = secondValueBefore.value;
       }
       break;
     default:
@@ -328,32 +354,28 @@ function operationsOnSubmit(operation, values) {
   }
   //After operation we changed(depend of flag) our datas and showing results
 
-  if (operationIsValid) {
-    if (firstValueType == "register") {
-      const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == firstValueBefore.name);
-      registerBoxes[index].children[0].value = firstValueAfter.value;
+  if (firstValueType == "register") {
+    const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == firstValueBefore.name);
+    registerBoxes[index].children[0].value = firstValueAfter.value;
+  } else {
+    // Cell
+    const index = cells.findIndex((item) => item.name == firstValueAfter.name);
+    cells[index].value = firstValueAfter.value;
+  }
+
+  if (secondValueType) {
+    if (secondValueType == "register") {
+      const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == secondValueBefore.name);
+      registerBoxes[index].children[0].value = secondValueAfter.value;
     } else {
       // Cell
-      const index = cells.findIndex((item) => item.name == firstValueAfter.name);
-      cells[index].value = firstValueAfter.value;
+      const index = cells.findIndex((item) => item.name == secondValueAfter.name);
+      cells[index].value = secondValueAfter.value;
     }
-
-    if (secondValueType) {
-      if (secondValueType == "register") {
-        const index = registerBoxes.findIndex((item) => item.textContent.trim().slice(0, 2) == secondValueBefore.name);
-        registerBoxes[index].children[0].value = secondValueAfter.value;
-      } else {
-        // Cell
-        const index = cells.findIndex((item) => item.name == secondValueAfter.name);
-        cells[index].value = secondValueAfter.value;
-      }
-    }
-    showingOperationsResult(operation, firstValueBefore, secondValueBefore, firstValueAfter, secondValueAfter);
-    //at the end we need to refresh datasets to allow resubmiting without choosing
-    refreshDatasetsOfUsedBoxes(firstValueAfter.value, secondValueAfter.value);
-  } else {
-    showingSweetAlert("Operation Failed!", "You'r maximum range of operation is 00-FF change data or operation type!");
   }
+  showingOperationsResult(operation, firstValueBefore, secondValueBefore, firstValueAfter, secondValueAfter);
+  //at the end we need to refresh datasets to allow resubmiting without choosing
+  refreshDatasetsOfUsedBoxes(firstValueAfter.value, secondValueAfter.value);
 }
 //Config for loading website;
 window.addEventListener("load", function () {
